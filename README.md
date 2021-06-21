@@ -13,17 +13,29 @@
 ```
 
 ## 빌드파일 실행
+
 ```
   npm start
 ```
 
 ## 포트 변경(9999번 예시)
 
-package.json
+### \*cross-env 방식
 
 ```
-  "scripts": {
-    "dev": "next -p 9999",
-    "start": "next start -p 9999"
-  }
+  PORT=9999 npm run dev
+```
+
+```
+  PORT=9999 npm start
+```
+
+### \*npx 방식
+
+```
+  npx next dev -p 9999
+```
+
+```
+  npx next start -p 9999
 ```
