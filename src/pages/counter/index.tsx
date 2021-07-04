@@ -1,12 +1,12 @@
 import React from 'react'
-import CounterComponent from 'src/components/counter'
-interface Props {
-  
-}
+import dynamic from 'next/dynamic'
+import { Loading } from 'src/components/common'
 
-const Counter = (props: Props) => {
+const CounterComponent = dynamic(() => import('src/components/counter'), { loading: () => <Loading /> })
+
+const Counter = () => {
   return (
-    <CounterComponent/>
+    <CounterComponent />
   )
 }
 
