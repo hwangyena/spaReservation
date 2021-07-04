@@ -1,0 +1,51 @@
+@import "normalize.css";
+
+:root {
+  --font: -apple-system, system-ui, BlinkMacSystemFont, "Helvetica Neue",
+    "Helvetica", sans-serif;
+  --primary: orange;
+  --secendary: #7fa6c5;
+  --text-primary: #000000;
+  --text-secendary: #ffffff;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -ms-flex: 0 1 auto;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  color: var(--text-primary);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+}
+
+input,
+select,
+textarea,
+button {
+  outline: none;
+  appearance: none;
+  -moz-appearance: none;
+  border-radius: unset;
+  border: 0px;
+  padding: 0px;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  -webkit-user-drag: none;
+}
