@@ -14,17 +14,14 @@ const useResponsive = (deviceType: DeviceType) => {
   useEffect(() => {
     const isMobile = window.matchMedia(mobileBreakPoint);
     const isTablet = window.matchMedia(tabletBreakPoint);
-    const getResponsive = () => {
-      if (isTablet.matches) {
-        setDevice("TABLET");
-      } else if (isMobile.matches) {
-        setDevice("MOBILE");
-      } else {
-        setDevice("DESKTOP");
-      }
+    const getDevice = () => setDevice(isTablet.matches ? 'TABLET' : isMobile.matches ? 'MOBILE' : 'DESKTOP')
+    let timeoutId: NodeJS.Timeout; // debounce mechanism
+    const resizeListener = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(getDevice, 300);
     };
-    window.addEventListener("resize", getResponsive);
-    return () => window.removeEventListener("resize", getResponsive);
+    window.addEventListener("resize", resizeListener);
+    return () => window.removeEventListener("resize", resizeListener);
   });
   return device;
 };
