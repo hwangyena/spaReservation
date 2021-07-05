@@ -13,13 +13,23 @@ const time = 500 // 스크롤 이벤트에 텀을 줘서 성능저하를 방지(
  */
 const useResponsive = (deviceType: DeviceType) => {
   const [device, setDevice] = useState<DeviceType>(deviceType);
+
   useEffect(() => {
+    // 최초 device 크기 확인
+    const isMobile = window.matchMedia(mobileBreakPoint);
+    const isTablet = window.matchMedia(tabletBreakPoint);
+    setDevice(isTablet.matches ? 'TABLET' : isMobile.matches ? 'MOBILE' : 'DESKTOP')
+  }, [])
+
+  useEffect(() => {
+    // 스크롤 될 때마다 크기 확인. throttle로 성능 최적화
     const isMobile = window.matchMedia(mobileBreakPoint);
     const isTablet = window.matchMedia(tabletBreakPoint);
     const resizeListener = () => setDevice(isTablet.matches ? 'TABLET' : isMobile.matches ? 'MOBILE' : 'DESKTOP')
     window.addEventListener("resize", throttle(resizeListener, time));
     return () => window.removeEventListener("resize", resizeListener);
-  });
+  }, [device]);
+
   return device;
 };
 
