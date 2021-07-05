@@ -1,5 +1,3 @@
-// styled-components예시
-
 import React from 'react'
 import styled from 'styled-components';
 import Router from 'next/router';
@@ -45,8 +43,8 @@ const paths = [
   'path': '/example/responsive'
   },
   {
-  'text': '추가예정',
-  'path': '/'
+  'text': '이미지 임포트 예시',
+  'path': '/example/img-import'
   },
   {
   'text': '추가예정',

@@ -1,5 +1,12 @@
 import Parser from "ua-parser-js";
 import { IncomingMessage } from "http";
+import cookie from "cookie";
+
+type ServerSideRequestType = IncomingMessage & {
+  cookies?: {
+    [key: string]: any;
+  };
+};
 
 export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 
@@ -8,7 +15,7 @@ export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
  * @param req getServerSideProps의 req
  * @returns 현재 디바이스의 타입
  */
-export const getDeviceType = (req?: IncomingMessage): DeviceType => {
+export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
   let userAgent;
   if (req) {
     userAgent = Parser(req.headers["user-agent"] || "");
@@ -35,7 +42,7 @@ export const getDeviceType = (req?: IncomingMessage): DeviceType => {
 export const transMoneyFormat = (
   value: string | number,
   option?: { prefix?: string; suffix?: string }
-) => {
+): string => {
   let result = value;
   if (typeof result === "string") {
     result = Number(result.replace(/[^0-9]/g, "")).toLocaleString();
@@ -45,4 +52,33 @@ export const transMoneyFormat = (
   result ?? "0";
 
   return `${option?.prefix ?? ""}${result}${option?.suffix ?? ""}`;
+};
+
+/**
+ * iamport 결제용 merchantId
+ */
+export const getMerchantUid = (userId?: number): string =>
+  (userId ?? "u" + Math.floor(Math.random() * 1000)) +
+  "_" +
+  new Date().toISOString();
+
+/**
+ * 서버사이드중에 쿠키 파싱
+ * @param req
+ * @returns 쿠키
+ */
+export const parseCookies = (req: ServerSideRequestType) => {
+  return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
+};
+
+/**
+ * uuid 생성 함수
+ * @returns uuid
+ */
+export const createUuid = (): string => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 };
