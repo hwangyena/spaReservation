@@ -14,8 +14,9 @@ const GlobalStyle = createGlobalStyle`
     font-size: 16px;
     color: var(--text-primary);
     background: #ffffff;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* 글자가 연해져요 */
+    /* -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
     font-variant: normal;
     font-feature-settings: normal;
   }
