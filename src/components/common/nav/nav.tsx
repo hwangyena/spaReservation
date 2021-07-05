@@ -34,19 +34,15 @@ const Wrapper = styled.nav`
 const paths = [
   {
   'text': '리덕스 예시',
-  'path': '/counter'
+  'path': '/example/counter'
   },
   {
   'text': '동적라우팅 예시',
-  'path': '/d-route'
+  'path': '/example/d-route'
   },
   {
-  'text': '추가예정',
-  'path': '/'
-  },
-  {
-  'text': '추가예정',
-  'path': '/'
+  'text': '반응형 컴포넌트 예시',
+  'path': '/example/responsive'
   },
   {
   'text': '추가예정',

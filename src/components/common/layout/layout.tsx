@@ -1,23 +1,21 @@
-// 인라인 스타일 예시
-
-import React, { ReactNode } from 'react'
-import { Footer, Header, Nav } from 'src/components/common'
+import { useQuery } from "@apollo/client";
+import React, { ReactNode } from "react";
+import { Footer, Header, Nav } from "src/components/common";
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 
 const Layout = ({ children }: Props) => {
+  useQuery
   return (
     <>
       <Header />
       <Nav />
-      <main style={{ minHeight: 'var(--content-height)' }}>
-        {children}
-      </main>
+      <main style={{ minHeight: "var(--content-height)" }}>{children}</main>
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

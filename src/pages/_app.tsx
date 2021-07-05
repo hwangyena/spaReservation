@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       <Head>
         <title>프로젝트 명을 기입하시오</title>
-        <meta name='viewport' content='width=device-width' />
+        <meta name='viewport' content="width=device-width, initial-scale=1" />
       </Head>
       <Provider store={store}>
         <ApolloProvider client={client}>
