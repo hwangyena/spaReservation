@@ -1,16 +1,21 @@
-import css from './footer.module.css';
+import styled from "styled-components";
+
+const Wrapper = styled.header`
+  height: 50px;
+  background: var(--secendary);
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const Footer = () => {
   return (
-    <footer className={css.container}>
-      <span>
-        © 2021 ITEZ
-      </span>
-      <span>
-        👍
-      </span>
-    </footer>
-  )
-}
+    <Wrapper>
+      <span>© 2021 ITEZ</span>
+      <span>👍</span>
+    </Wrapper>
+  );
+};
 
-export default Footer
+export default Footer;

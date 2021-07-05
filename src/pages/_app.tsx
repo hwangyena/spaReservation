@@ -6,7 +6,8 @@ import store from 'src/redux/store'
 import { ApolloProvider } from '@apollo/client'
 import { client } from 'src/apis/client'
 import { Layout } from 'src/components/common'
-import './app.css';
+import GlobalStyle from 'src/assets/global-style'
+import 'antd/dist/antd.css'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -17,6 +18,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <Provider store={store}>
         <ApolloProvider client={client}>
+          <GlobalStyle/>
           <Layout>
             <Component {...pageProps} />
           </Layout>

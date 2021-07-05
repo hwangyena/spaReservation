@@ -1,32 +1,61 @@
-// css-module with classnames 예시
+import Link from "next/link";
+import Image from "next/image";
+import styled from "styled-components";
+import React, { useState } from "react";
+import Drawer from "antd/lib/drawer"; // default export 로 가져와야 번들사이즈가 줄어듬
 
-import Link from 'next/link'
-import css from './header.module.css'
-import classNames from 'classnames/bind'
-import Image from 'next/image';
-
-const cn = classNames.bind(css);
+const Wrapper = styled.header`
+  background: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: auto;
+  .inner {
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    justify-content: space-between;
+  }
+  .row-flex {
+    display: flex;
+    align-items: center;
+  }
+  .ham {
+    cursor: pointer;
+  }
+`;
 
 const Header = () => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   return (
-    <header className={cn('container')}>
-      <div className={cn('inner', 'row-flex')}>
-        <div className={cn('row-flex')}>
-          <Link href={'/'}>
+    <Wrapper>
+      <div className="row-flex inner">
+        <div className="row-flex">
+          <Link href={"/"}>
             <a>
               <Image
-                src={'/vercel.svg'}
-                layout={'fixed'}
+                src={"/vercel.svg"}
+                layout={"fixed"}
                 width={100}
                 height={30}
+                alt="logo"
               />
             </a>
           </Link>
         </div>
-        <div>Login</div>
+        <div onClick={() => setIsVisible(true)} className="ham">
+          🍔
+        </div>
+        <Drawer
+          visible={isVisible}
+          placement="right"
+          onClose={() => setIsVisible(false)}
+        >
+          짜잔
+        </Drawer>
       </div>
-    </header >
-  )
-}
+    </Wrapper>
+  );
+};
 
-export default Header
+export default Header;

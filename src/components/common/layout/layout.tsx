@@ -12,7 +12,7 @@ const Layout = ({ children }: Props) => {
     <>
       <Header />
       <Nav />
-      <main style={{ minHeight: 'calc(100vh - 150px)' }}>
+      <main style={{ minHeight: 'var(--content-height)' }}>
         {children}
       </main>
       <Footer />
