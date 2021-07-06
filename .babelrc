@@ -1,7 +1,28 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    "next/babel"
+  ],
   "plugins": [
-    ["styled-components", { "ssr": true }],
-    ["import", { "libraryName": "antd"} ]
+    [
+      "styled-components",
+      {
+        "ssr": true
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "antd"
+      }
+    ],
+    [
+      "import",
+      {
+        "libraryName": "lodash",
+        "libraryDirectory": "",
+        "camel2DashComponentName": false
+      },
+      "lodash"
+    ]
   ]
 }

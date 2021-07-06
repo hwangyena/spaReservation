@@ -16,7 +16,7 @@ export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
  * @returns 현재 디바이스의 타입
  */
 export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
-  let userAgent;
+  let userAgent: UAParser.IResult;
   if (req) {
     userAgent = UAParser(req.headers["user-agent"] || "");
   } else {
