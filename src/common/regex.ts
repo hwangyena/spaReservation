@@ -51,5 +51,7 @@ export const makePasswordRegExp = (rule: IPasswordRestriction) => {
   return new RegExp("^" + requireUppercase + requireLowercase + requireNumber + requireSpecialCharacter + "." + lengthRestrict + "$");
 }
 
-export const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-export const phoneRegExp = /^(?:\+?82-?|0)(1(?:0|1|[6-9]))[.-]?(\d{3,4})[.-]?(\d{4})$/
+export const REG_EXP = {
+  email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+  phone: /^(?:\+?82-?|0)(1(?:0|1|[6-9]))[.-]?(\d{3,4})[.-]?(\d{4})$/
+}

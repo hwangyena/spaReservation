@@ -1,7 +1,8 @@
 import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
 import cookie from "cookie";
-import { format, formatDistanceToNowStrict } from 'date-fns'
+import format from 'date-fns/format'
+import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import ko from "date-fns/locale/ko";
 
 type ServerSideRequestType = IncomingMessage & {
@@ -25,6 +26,7 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
     userAgent = new UAParser().getResult();
   }
   const deviceType = userAgent?.device?.type;
+
   switch (deviceType) {
     case "mobile":
       return "MOBILE";
@@ -40,7 +42,7 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
  * @param req
  * @returns 쿠키
  */
- export const parseCookies = (req: ServerSideRequestType) => {
+export const parseCookies = (req: ServerSideRequestType): { [key: string]: string } => {
   return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
 };
 
@@ -50,17 +52,15 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
  * @param option prefix: 접두사, suffix: 접미사
  * @returns 콤마가 붙은 숫자
  */
-export const formatToMoney = (
-  value: string | number,
-  option?: { prefix?: string; suffix?: string }
-): string => {
+export const formatToMoney = ( value: string | number, option?: { prefix?: string; suffix?: string }): string => {
   let result = value
   if (typeof result === 'string') {
     result = Number(result.replace(/[^0-9]/g, '')).toLocaleString()
   } else if (typeof result === 'number') {
     result = result.toLocaleString()
+  } else {
+    result = '0'
   }
-  result ?? '0'
   return `${option?.prefix ?? ''}${result}${option?.suffix ?? ''}`
 }
 
@@ -69,7 +69,7 @@ export const formatToMoney = (
  * @param date iso 날짜
  * @param dateFormat 포맷형식(선택)
  */
- export const formatToUtc = (date = '', dateFormat?: string) => {
+export const formatToUtc = (date = '', dateFormat?: string): string => {
   if (date) {
     if (dateFormat) {
       return format(new Date(date), dateFormat)
@@ -102,6 +102,8 @@ export const getMerchantUid = (userId?: number): string =>
   (userId ?? "u" + Math.floor(Math.random() * 1000)) +
   "_" +
   new Date().toISOString();
+
+
 
 /**
  * uuid 생성 함수

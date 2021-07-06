@@ -53,10 +53,10 @@ const Responsive = ({ deviceType }: Props) => {
         <span className="sp">{getResponsiveComponent(deviceType)}</span>
       </div>
       <div className="row">
-        deviceState : 초기값은 디바이스의 종류, 이후 가로넓이에 따라 정해짐
+        deviceState : 초기값은 디바이스의 종류, 이후 가로넓이에 따라 정해짐(반응형)
       </div>
       <div className="row">
-        deviceType : 라우팅 시 디바이스의 종류에 따라 정해짐
+        deviceType : 라우팅 시 디바이스의 종류에 따라 정해짐(적응형)
       </div>
     </Wrapper>
   );

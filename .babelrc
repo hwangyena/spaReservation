@@ -3,27 +3,8 @@
     "next/babel"
   ],
   "plugins": [
-    [
-      "styled-components",
-      {
-        "ssr": true
-      }
-    ],
-    [
-      "import",
-      {
-        "libraryName": "antd"
-      }
-    ],
-    [
-      "import",
-      {
-        "libraryName": "lodash",
-        "libraryDirectory": "",
-        "camel2DashComponentName": false
-      },
-      "lodash"
-    ],
+    [ "styled-components", { "ssr": true } ],[ "import", { "libraryName": "antd" } ],
+    [ "import", { "libraryName": "lodash", "libraryDirectory": "",  "camel2DashComponentName": false },  "lodash" ],
     "date-fns"
   ]
 }

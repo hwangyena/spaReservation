@@ -4,5 +4,6 @@ export const VARIABLES = {
   ACCESS_TOKEN: "",
   REFRESH_TOKEN: "",
   KAKAO_TOKEN: "",
-  NAVER_TOKEN: "",
+  GOOGLE_TOKEN: "",
+  IAMPORT:'',
 };
