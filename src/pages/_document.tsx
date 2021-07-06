@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
 import { ServerStyleSheet } from 'styled-components';
-
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
@@ -33,6 +32,9 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          {/* 아임포트용 스크립트 */}
+          {/* <script async type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" />
+          <script async type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js" /> */}
         </body>
       </Html>
     )

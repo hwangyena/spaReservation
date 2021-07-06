@@ -23,6 +23,7 @@
         "camel2DashComponentName": false
       },
       "lodash"
-    ]
+    ],
+    "date-fns"
   ]
 }

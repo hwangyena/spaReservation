@@ -1,6 +1,8 @@
 import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
 import cookie from "cookie";
+import { format, formatDistanceToNowStrict } from 'date-fns'
+import ko from "date-fns/locale/ko";
 
 type ServerSideRequestType = IncomingMessage & {
   cookies?: {
@@ -34,25 +36,64 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
 };
 
 /**
+ * 서버사이드중에 쿠키를 파싱하는 함수
+ * @param req
+ * @returns 쿠키
+ */
+ export const parseCookies = (req: ServerSideRequestType) => {
+  return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
+};
+
+/**
  * 돈 바꿔주는 함수
  * @param value 숫자 혹은 숫자로 이루어진 문자
  * @param option prefix: 접두사, suffix: 접미사
  * @returns 콤마가 붙은 숫자
  */
-export const transMoneyFormat = (
+export const formatToMoney = (
   value: string | number,
   option?: { prefix?: string; suffix?: string }
 ): string => {
-  let result = value;
-  if (typeof result === "string") {
-    result = Number(result.replace(/[^0-9]/g, "")).toLocaleString();
-  } else if (typeof result === "number") {
-    result = result.toLocaleString();
+  let result = value
+  if (typeof result === 'string') {
+    result = Number(result.replace(/[^0-9]/g, '')).toLocaleString()
+  } else if (typeof result === 'number') {
+    result = result.toLocaleString()
   }
-  result ?? "0";
+  result ?? '0'
+  return `${option?.prefix ?? ''}${result}${option?.suffix ?? ''}`
+}
 
-  return `${option?.prefix ?? ""}${result}${option?.suffix ?? ""}`;
-};
+/**
+ * iso 시간을 포맷화 시켜주는 함수
+ * @param date iso 날짜
+ * @param dateFormat 포맷형식(선택)
+ */
+ export const formatToUtc = (date = '', dateFormat?: string) => {
+  if (date) {
+    if (dateFormat) {
+      return format(new Date(date), dateFormat)
+    } else {
+      return format(new Date(date), 'yyyy-MM-dd')
+    }
+  } else {
+    return ''
+  }
+}
+
+/**
+ * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
+ */
+export const compareToday = (dateTime: string, addSuffix = true): string => {
+  if (dateTime) {
+    return formatDistanceToNowStrict(new Date(dateTime), {
+      locale: ko,
+      addSuffix: addSuffix,
+    })
+  } else {
+    return ''
+  }
+}
 
 /**
  * iamport 결제용 merchantId
@@ -61,15 +102,6 @@ export const getMerchantUid = (userId?: number): string =>
   (userId ?? "u" + Math.floor(Math.random() * 1000)) +
   "_" +
   new Date().toISOString();
-
-/**
- * 서버사이드중에 쿠키 파싱
- * @param req
- * @returns 쿠키
- */
-export const parseCookies = (req: ServerSideRequestType) => {
-  return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
-};
 
 /**
  * uuid 생성 함수
