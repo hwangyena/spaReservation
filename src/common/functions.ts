@@ -20,6 +20,7 @@ export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
  */
 export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
   let userAgent: UAParser.IResult;
+
   if (req) {
     userAgent = UAParser(req.headers["user-agent"] || "");
   } else {
@@ -52,15 +53,21 @@ export const parseCookies = (req: ServerSideRequestType): { [key: string]: strin
  * @param option prefix: 접두사, suffix: 접미사
  * @returns 콤마가 붙은 숫자
  */
-export const formatToMoney = ( value: string | number, option?: { prefix?: string; suffix?: string }): string => {
+export const formatToMoney = (value: string | number, option?: { prefix?: string; suffix?: string }): string => {
   let result = value
-  if (typeof result === 'string') {
-    result = Number(result.replace(/[^0-9]/g, '')).toLocaleString()
-  } else if (typeof result === 'number') {
-    result = result.toLocaleString()
-  } else {
-    result = '0'
+
+  switch (typeof result) {
+    case 'string':
+      result = Number(result.replace(/[^0-9]/g, '')).toLocaleString()
+      break;
+    case 'number':
+      result = result.toLocaleString()
+      break;
+    default:
+      result = '0'
+      break;
   }
+
   return `${option?.prefix ?? ''}${result}${option?.suffix ?? ''}`
 }
 
@@ -70,49 +77,24 @@ export const formatToMoney = ( value: string | number, option?: { prefix?: strin
  * @param dateFormat 포맷형식(선택)
  */
 export const formatToUtc = (date = '', dateFormat?: string): string => {
-  if (date) {
-    if (dateFormat) {
-      return format(new Date(date), dateFormat)
-    } else {
-      return format(new Date(date), 'yyyy-MM-dd')
-    }
-  } else {
-    return ''
-  }
+  return format(new Date(date ?? 0), dateFormat ?? 'yyyy-MM-dd')
 }
 
 /**
  * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
  */
 export const compareToday = (dateTime: string, addSuffix = true): string => {
-  if (dateTime) {
-    return formatDistanceToNowStrict(new Date(dateTime), {
-      locale: ko,
-      addSuffix: addSuffix,
-    })
-  } else {
-    return ''
-  }
+  return formatDistanceToNowStrict(new Date(dateTime ?? 0), {
+    locale: ko,
+    addSuffix: addSuffix,
+  })
 }
 
 /**
- * iamport 결제용 merchantId
+ * iamport 주문번호 생성 함수
+ * @param userId 유저ID(선택)
+ * @returns 주문번호
  */
-export const getMerchantUid = (userId?: number): string =>
-  (userId ?? "u" + Math.floor(Math.random() * 1000)) +
-  "_" +
-  new Date().toISOString();
-
-
-
-/**
- * uuid 생성 함수
- * @returns uuid
- */
-export const createUuid = (): string => {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    const r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-};
+export const getMerchantUid = (userId?: number): string => {
+  return (userId ?? "u" + Math.floor(Math.random() * 1000)) + "_" + new Date().toISOString();
+}
