@@ -8,11 +8,11 @@ const time = 500 // 스크롤 이벤트에 텀을 줘서 성능저하를 방지(
 
 /**
  * 현재 화면의 크기를 알려주는 hooks
- * @param deviceType getDeviceType에서 받아온 문자열
+ * @param deviceType 'DESKTOP' | 'MOBILE' | 'TABLET' 중 하나, default 'DESKTOP'
  * @returns 'DESKTOP' | 'MOBILE' | 'TABLET'
  */
-const useResponsive = (deviceType: DeviceType) => {
-  const [device, setDevice] = useState<DeviceType>(deviceType);
+const useResponsive = (deviceType?: DeviceType) => {
+  const [device, setDevice] = useState<DeviceType>(deviceType ?? 'DESKTOP');
 
   useEffect(() => {
     // 최초 device 크기 확인

@@ -1,5 +1,7 @@
 # Itez Next Template for SSR(Server Side Rendering)
 
+프로젝트 시작 시 ~/example 폴더를 전부 제거하신 후 시작하시면 됩니다.
+
 ## 설치
 ```
   npm ci

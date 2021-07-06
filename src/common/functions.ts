@@ -1,4 +1,4 @@
-import Parser from "ua-parser-js";
+import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
 import cookie from "cookie";
 
@@ -18,9 +18,9 @@ export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
   let userAgent;
   if (req) {
-    userAgent = Parser(req.headers["user-agent"] || "");
+    userAgent = UAParser(req.headers["user-agent"] || "");
   } else {
-    userAgent = new Parser().getResult();
+    userAgent = new UAParser().getResult();
   }
   const deviceType = userAgent?.device?.type;
   switch (deviceType) {
