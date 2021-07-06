@@ -135,7 +135,7 @@ export interface IamportType {
   onFailure: () => void
 }
 
-export const onIamport = (p: IamportType) => {
+export const executeIamport = (p: IamportType) => {
   if (p.isScrollToTop) {
     window.scrollTo(0, 0);
   }
