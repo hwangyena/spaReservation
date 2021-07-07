@@ -21,7 +21,7 @@ const ImageImport = () => {
       <h1>import 비교(next/image vs img)</h1>
       <section>
         <Image
-          src={"/static/heart-smile.png"}
+          src={"/assets/heart-smile.png"}
           alt="heart-smile"
           width={50}
           height={50}
