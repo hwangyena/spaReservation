@@ -3,7 +3,6 @@ import { ServerStyleSheet } from 'styled-components';
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet();
-    const initialProps = await Document.getInitialProps(ctx)
     const originalRenderPage = ctx.renderPage;
     try {
       ctx.renderPage = () =>
@@ -11,6 +10,7 @@ class MyDocument extends Document {
           enhanceApp: (App) => (props) =>
             sheet.collectStyles(<App {...props} />),
         });
+      const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
         styles: (
@@ -28,7 +28,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head />
+        <Head>
+          
+        </Head>
         <body>
           <Main />
           <NextScript />
