@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle";
 import { useEffect, useState } from "react";
-import type { DeviceType } from "src/common/functions";
+import type { DeviceType } from "src/common";
 
 const mobileBreakPoint = "only screen and (max-width: 479.98px)";
 const tabletBreakPoint = "only screen and (min-width: 480px) and (max-width: 1023.98px)";

@@ -10,6 +10,7 @@ const meta = <>
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.naver.com/" />
 </>
+
 const link = <>
   <link rel={'icon'} href={'/favicon.ico'} />
 </>

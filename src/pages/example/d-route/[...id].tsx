@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import React from 'react'
 import Abc from 'src/components/example/d-route/abc'
 
 interface Props {

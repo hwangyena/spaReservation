@@ -5,13 +5,13 @@ import format from 'date-fns/format'
 import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
 import ko from "date-fns/locale/ko";
 
+export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
+
 type ServerSideRequestType = IncomingMessage & {
   cookies?: {
     [key: string]: any;
   };
 };
-
-export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 
 /**
  * SSR중에 디바이스의 타입을 확인하는 함수
