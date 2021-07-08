@@ -6,7 +6,7 @@
     "@next/next/link-passhref": "off",
     "react/display-name": "off",
     "react-hooks/exhaustive-deps": "off",
-    "no-unused-vars": "error", // 프로젝트마무리 할 때 warn으로 수정
+    "no-unused-vars": "warn", // 프로젝트마무리 할 때 warn으로 수정
     "no-console": "off", // 프로젝트마무리 할 때 warn으로 수정
     "jsx-a11y/alt-text": "off" // 프로젝트마무리 할 때 warn으로 수정
   }
