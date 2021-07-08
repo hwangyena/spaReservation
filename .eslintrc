@@ -1,13 +1,12 @@
 {
   "extends": "next",
   "rules": {
-    "@next/next/no-img-element": "off",
-    "@next/next/no-page-custom-font": "off",
-    "@next/next/link-passhref": "off",
+    "@next/next/no-img-element": "warn",
+    "@next/next/no-page-custom-font": "warn",
+    "@next/next/link-passhref": "warn",
     "react/display-name": "off",
-    "react-hooks/exhaustive-deps": "off",
+    "react-hooks/exhaustive-deps": "warn",
     "no-unused-vars": "warn", // 프로젝트마무리 할 때 warn으로 수정
-    "no-console": "off", // 프로젝트마무리 할 때 warn으로 수정
-    "jsx-a11y/alt-text": "off" // 프로젝트마무리 할 때 warn으로 수정
+    "no-console": "warn" // 프로젝트마무리 할 때 warn으로 수정
   }
 }

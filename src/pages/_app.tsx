@@ -9,7 +9,6 @@ import "antd/dist/antd.css";
 import { GlobalStyle } from "src/styles";
 
 const App = ({ Component, pageProps }: AppProps) => {
-  const a = 2;
   return (
     <>
       <Head />

@@ -6,9 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "next lint",
+    "test": "tsc && next lint",
     "generate": "graphql-codegen",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tsc": "tsc"
   },
   "dependencies": {
     "@apollo/client": "^3.3.20",
