@@ -82,6 +82,9 @@ export const formatToUtc = (date = '', dateFormat?: string): string => {
 
 /**
  * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
+ * @param dateTime ISO날짜
+ * @param addSuffix 접두사 여부
+ * @returns 남은 시간
  */
 export const compareToday = (dateTime: string, addSuffix = true): string => {
   return formatDistanceToNowStrict(new Date(dateTime ?? 0), {
