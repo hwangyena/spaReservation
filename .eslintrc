@@ -1,9 +1,13 @@
 {
   "extends": "next",
   "rules": {
-    "react/display-name": "off",
     "@next/next/no-img-element": "off",
-    "no-unused-vars": "warn",
-    "no-console": "off"
+    "@next/next/no-page-custom-font": "off",
+    "@next/next/link-passhref": "off",
+    "react/display-name": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "no-unused-vars": "error", // 프로젝트마무리 할 때 warn으로 수정
+    "no-console": "off", // 프로젝트마무리 할 때 warn으로 수정
+    "jsx-a11y/alt-text": "off" // 프로젝트마무리 할 때 warn으로 수정
   }
 }
