@@ -5,6 +5,7 @@ import type { DeviceType } from "src/common";
 const mobileBreakPoint = "only screen and (max-width: 479.98px)";
 const tabletBreakPoint = "only screen and (min-width: 480px) and (max-width: 1023.98px)";
 const time = 500 // 스크롤 이벤트에 텀을 줘서 성능저하를 방지(중요)
+const compareDevice = (isMobile: boolean, isTablet: boolean) => isMobile ? "MOBILE" : isTablet ? "TABLET" : "DESKTOP";
 
 /**
  * 현재 화면의 크기를 알려주는 hooks
@@ -16,18 +17,24 @@ const useResponsive = (deviceType?: DeviceType) => {
 
   useEffect(() => {
     // 최초 device 크기 확인
-    const isMobile = window.matchMedia(mobileBreakPoint);
-    const isTablet = window.matchMedia(tabletBreakPoint);
-    setDevice(isTablet.matches ? 'TABLET' : isMobile.matches ? 'MOBILE' : 'DESKTOP')
+    const matchMobile = window.matchMedia(mobileBreakPoint);
+    const matchTablet = window.matchMedia(tabletBreakPoint);
+    const c = compareDevice(matchMobile.matches, matchTablet.matches)
+    setDevice(c);
   }, [])
 
   useEffect(() => {
     // 스크롤 될 때마다 크기 확인. throttle로 성능 최적화
-    const isMobile = window.matchMedia(mobileBreakPoint);
-    const isTablet = window.matchMedia(tabletBreakPoint);
-    const resizeListener = () => setDevice(isTablet.matches ? 'TABLET' : isMobile.matches ? 'MOBILE' : 'DESKTOP')
+    const matchMobile = window.matchMedia(mobileBreakPoint);
+    const matchTablet = window.matchMedia(tabletBreakPoint);
+    const resizeListener = () => {
+      const c = compareDevice(matchMobile.matches, matchTablet.matches)
+      setDevice(c);
+    };
     window.addEventListener("resize", throttle(resizeListener, time));
-    return () => window.removeEventListener("resize", resizeListener);
+    return () => {
+      window.removeEventListener("resize", resizeListener);
+    };
   }, [device]);
 
   return device;
