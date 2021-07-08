@@ -14,10 +14,10 @@
   npm run dev
 ```
 
-## 타입 체크
+## 타입 체크, 문법 검사
 
 ```
-  npm run lint
+  npm test
 ```
 
 ## 빌드
