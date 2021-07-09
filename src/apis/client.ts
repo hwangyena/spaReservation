@@ -14,12 +14,7 @@ import { VARIABLES } from "src/common";
 // import { getMainDefinition } from "@apollo/client/utilities"; // subscription시 해제
 // import { WebSocketLink } from "@apollo/client/link/ws"; // subscription시 해제
 
-interface TokenType {
-  accessToken?: string;
-  refreshToken?: string;
-}
-
-export const getClient = ({ accessToken, refreshToken }: TokenType) => {
+export const getClient = (accessToken?:string,refreshToken?:string) => {
   if(!accessToken) accessToken = Cookies.get(VARIABLES.ACCESS_TOKEN)
   if(!refreshToken) refreshToken = Cookies.get(VARIABLES.REFRESH_TOKEN);
 

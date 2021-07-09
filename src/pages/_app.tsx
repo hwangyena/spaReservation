@@ -17,13 +17,13 @@ interface MyAppProps extends AppProps {
 }
 
 const MyApp = ({ Component, pageProps, cookies }: MyAppProps) => {
-  const accessToken = cookies[VARIABLES.ACCESS_TOKEN]
-  const refreshToken = cookies[VARIABLES.REFRESH_TOKEN]
+  const accessToken = cookies[VARIABLES.ACCESS_TOKEN];
+  const refreshToken = cookies[VARIABLES.REFRESH_TOKEN];
   return (
     <>
       <Head />
       <Provider store={store}>
-        <ApolloProvider client={getClient({accessToken,refreshToken})}>
+        <ApolloProvider client={getClient(accessToken, refreshToken)}>
           <GlobalStyle />
           <Layout>
             <Component {...pageProps} />
