@@ -20,6 +20,11 @@ interface TokenType {
 }
 
 export const getClient = ({ accessToken, refreshToken }: TokenType) => {
+  if(!accessToken) accessToken = Cookies.get(VARIABLES.ACCESS_TOKEN)
+  if(!refreshToken) refreshToken = Cookies.get(VARIABLES.REFRESH_TOKEN);
+
+  const atkName = VARIABLES.ACCESS_TOKEN
+  const rtkName = VARIABLES.REFRESH_TOKEN
   let isRefreshing = false;
   let pendingRequests: Array<() => void> = [];
 
@@ -63,10 +68,10 @@ export const getClient = ({ accessToken, refreshToken }: TokenType) => {
               forward$ = fromPromise(
                 getNewToken()
                   .then(({ atk, rtk }) => {
-                    Cookies.set(VARIABLES.ACCESS_TOKEN, atk, {
+                    Cookies.set(atkName, atk, {
                       expires: 14,
                     });
-                    Cookies.set(VARIABLES.REFRESH_TOKEN, rtk, {
+                    Cookies.set(rtkName, rtk, {
                       expires: 14,
                     });
                     resolvePendingRequests();
@@ -74,8 +79,8 @@ export const getClient = ({ accessToken, refreshToken }: TokenType) => {
                   })
                   .catch(() => {
                     pendingRequests = [];
-                    Cookies.remove(VARIABLES.ACCESS_TOKEN);
-                    Cookies.remove(VARIABLES.REFRESH_TOKEN);
+                    Cookies.remove(atkName);
+                    Cookies.remove(rtkName);
                     alert("세션이 만료 되었습니다.");
                     Router.push("/");
                     return;
@@ -113,7 +118,7 @@ export const getClient = ({ accessToken, refreshToken }: TokenType) => {
   //   },
   // });
 
-  const authLink = setContext((_, { headers }) => {
+  const authLink = setContext(async (_, { headers }) => {
     return {
       headers: {
         ...headers,
