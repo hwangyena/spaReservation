@@ -8,11 +8,7 @@ import ko from "date-fns/locale/ko";
 export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 
 type ServerSideRequestType =
-  | (IncomingMessage & {
-      cookies?: {
-        [key: string]: any;
-      };
-    })
+  | (IncomingMessage & { cookies?: { [key: string]: any } })
   | undefined;
 
 /**
@@ -42,12 +38,10 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
 
 /**
  * 서버사이드중에 쿠키를 파싱하는 함수
- * @param req
- * @returns 쿠키
+ * @param req IncomingMessage
+ * @returns 쿠키들
  */
-export const parseCookies = (
-  req: ServerSideRequestType
-): { [key: string]: string } => {
+export const parseCookies = (req: ServerSideRequestType) => {
   return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
 };
 
@@ -106,9 +100,5 @@ export const compareToday = (dateTime: string, addSuffix = true): string => {
  * @returns 주문번호
  */
 export const getMerchantUid = (userId?: number): string => {
-  return (
-    (userId ?? "u" + Math.floor(Math.random() * 1000)) +
-    "_" +
-    new Date().toISOString()
-  );
+  return ((userId ?? "u" + Math.floor(Math.random() * 1000)) + "_" + new Date().toISOString());
 };
