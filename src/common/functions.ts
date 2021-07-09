@@ -1,17 +1,19 @@
 import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
 import cookie from "cookie";
-import format from 'date-fns/format'
-import formatDistanceToNowStrict from 'date-fns/formatDistanceToNowStrict'
+import format from "date-fns/format";
+import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import ko from "date-fns/locale/ko";
 
 export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 
-type ServerSideRequestType = IncomingMessage & {
-  cookies?: {
-    [key: string]: any;
-  };
-};
+type ServerSideRequestType =
+  | (IncomingMessage & {
+      cookies?: {
+        [key: string]: any;
+      };
+    })
+  | undefined;
 
 /**
  * SSR중에 디바이스의 타입을 확인하는 함수
@@ -43,7 +45,9 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
  * @param req
  * @returns 쿠키
  */
-export const parseCookies = (req: ServerSideRequestType): { [key: string]: string } => {
+export const parseCookies = (
+  req: ServerSideRequestType
+): { [key: string]: string } => {
   return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
 };
 
@@ -53,32 +57,35 @@ export const parseCookies = (req: ServerSideRequestType): { [key: string]: strin
  * @param option prefix: 접두사, suffix: 접미사
  * @returns 콤마가 붙은 숫자
  */
-export const formatToMoney = (value: string | number, option?: { prefix?: string; suffix?: string }): string => {
-  let result = value
+export const formatToMoney = (
+  value: string | number,
+  option?: { prefix?: string; suffix?: string }
+): string => {
+  let result = value;
 
   switch (typeof result) {
-    case 'string':
-      result = Number(result.replace(/[^0-9]/g, '')).toLocaleString()
+    case "string":
+      result = Number(result.replace(/[^0-9]/g, "")).toLocaleString();
       break;
-    case 'number':
-      result = result.toLocaleString()
+    case "number":
+      result = result.toLocaleString();
       break;
     default:
-      result = '0'
+      result = "0";
       break;
   }
 
-  return `${option?.prefix ?? ''}${result}${option?.suffix ?? ''}`
-}
+  return `${option?.prefix ?? ""}${result}${option?.suffix ?? ""}`;
+};
 
 /**
  * iso 시간을 포맷화 시켜주는 함수
  * @param date iso 날짜
  * @param dateFormat 포맷형식(선택)
  */
-export const formatToUtc = (date = '', dateFormat?: string): string => {
-  return format(new Date(date ?? 0), dateFormat ?? 'yyyy-MM-dd')
-}
+export const formatToUtc = (date = "", dateFormat?: string): string => {
+  return format(new Date(date ?? 0), dateFormat ?? "yyyy-MM-dd");
+};
 
 /**
  * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
@@ -90,8 +97,8 @@ export const compareToday = (dateTime: string, addSuffix = true): string => {
   return formatDistanceToNowStrict(new Date(dateTime ?? 0), {
     locale: ko,
     addSuffix: addSuffix,
-  })
-}
+  });
+};
 
 /**
  * iamport 주문번호 생성 함수
@@ -99,5 +106,9 @@ export const compareToday = (dateTime: string, addSuffix = true): string => {
  * @returns 주문번호
  */
 export const getMerchantUid = (userId?: number): string => {
-  return (userId ?? "u" + Math.floor(Math.random() * 1000)) + "_" + new Date().toISOString();
-}
+  return (
+    (userId ?? "u" + Math.floor(Math.random() * 1000)) +
+    "_" +
+    new Date().toISOString()
+  );
+};
