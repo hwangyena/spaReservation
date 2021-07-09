@@ -1,12 +1,16 @@
 {
-  "extends": "next",
+  "extends": ["next", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
   "rules": {
-    "@next/next/no-img-element": "warn",
-    "@next/next/no-page-custom-font": "warn",
-    "@next/next/link-passhref": "warn",
-    "react/display-name": "off",
-    "react-hooks/exhaustive-deps": "warn",
-    "no-unused-vars": "warn", // 프로젝트마무리 할 때 warn으로 수정
-    "no-console": "warn" // 프로젝트마무리 할 때 warn으로 수정
+    "@next/next/link-passhref": "warn", // next/link 에서 passhref props를 쓰는지 검사
+    "@next/next/no-img-element": "off", // Image가 아닌 img를 쓰는지 검사
+    "@next/next/no-page-custom-font": "warn", // 폰트 cdn이 document파일 외에 있는 지 검사
+    "no-console": "off", // 콘솔 검사
+    "no-unused-vars": "off", // no touch
+    "react/display-name": "off", // no touch
+    "react-hooks/exhaustive-deps": "warn", // hooks 검사
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 함수 자료형 검사
+    "@typescript-eslint/no-explicit-any": "off", // any 타입 검사
+    "@typescript-eslint/no-unused-vars": "error" // 미사용 변수 검사
   }
 }

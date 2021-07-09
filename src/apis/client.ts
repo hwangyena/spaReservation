@@ -11,15 +11,19 @@ import Cookies from "js-cookie";
 import MUTATIONS from "./mutations";
 import Router from "next/router";
 import { VARIABLES } from "src/common";
+import { concatPagination, Observable } from "@apollo/client/utilities";
 // import { getMainDefinition } from "@apollo/client/utilities"; // subscription시 해제
 // import { WebSocketLink } from "@apollo/client/link/ws"; // subscription시 해제
 
-export const getClient = (accessToken?:string,refreshToken?:string) => {
-  if(!accessToken) accessToken = Cookies.get(VARIABLES.ACCESS_TOKEN)
-  if(!refreshToken) refreshToken = Cookies.get(VARIABLES.REFRESH_TOKEN);
-
-  const atkName = VARIABLES.ACCESS_TOKEN
-  const rtkName = VARIABLES.REFRESH_TOKEN
+/**
+ * serverside중 토큰을 받아 아폴로 클라이언트를 생성하는 함수
+ * @param accessToken 엑세스토큰
+ * @param refreshToken 리프레쉬토큰
+ * @returns 아폴로 클라이언트
+ */
+export const getClient = (accessToken = "", refreshToken = "") => {
+  const atkName = VARIABLES.ACCESS_TOKEN;
+  const rtkName = VARIABLES.REFRESH_TOKEN;
   let isRefreshing = false;
   let pendingRequests: Array<() => void> = [];
 
@@ -29,6 +33,8 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
   };
 
   const getNewToken = async () => {
+    if (!refreshToken)
+      refreshToken = Cookies.get(VARIABLES.REFRESH_TOKEN) ?? "";
     if (!refreshToken) return null;
     const data = {
       query: MUTATIONS.RENEW_TOKEN,
@@ -36,9 +42,7 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
     };
     const result = await fetch(VARIABLES.END_POINT, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     }).then((response) => response.json());
     try {
@@ -54,21 +58,17 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
     ({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
         graphQLErrors.map(({ message, locations, path }) => {
-          // const t = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`;
-          // console.log(t);
+          const t = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`;
+          console.log(t);
           if (message.includes("유효한 accessToken이 아닙니다.")) {
-            let forward$;
+            let forward$: Observable<any>;
             if (!isRefreshing) {
               isRefreshing = true;
               forward$ = fromPromise(
                 getNewToken()
                   .then(({ atk, rtk }) => {
-                    Cookies.set(atkName, atk, {
-                      expires: 14,
-                    });
-                    Cookies.set(rtkName, rtk, {
-                      expires: 14,
-                    });
+                    Cookies.set(atkName, atk, { expires: 14 });
+                    Cookies.set(rtkName, rtk, { expires: 14 });
                     resolvePendingRequests();
                     return atk;
                   })
@@ -96,7 +96,7 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
         });
       }
       if (networkError) {
-        // console.log(`[Network error]: ${networkError}`);
+        console.log(`[Network error]: ${networkError}`);
       }
     }
   );
@@ -114,10 +114,12 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
   // });
 
   const authLink = setContext(async (_, { headers }) => {
+    if (!accessToken) accessToken = Cookies.get(VARIABLES.ACCESS_TOKEN) ?? "";
+
     return {
       headers: {
         ...headers,
-        authorization: accessToken ? `Bearer ${accessToken}` : "",
+        authorization: `Bearer ${accessToken}`,
       },
     };
   });
@@ -139,11 +141,20 @@ export const getClient = (accessToken?:string,refreshToken?:string) => {
   //   authLink.concat(httpLink)
   // );
 
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          selectPostsByEveryone: concatPagination(),
+          selectFaqsByEveryone: concatPagination(),
+        },
+      },
+    },
+  });
 
   const client = new ApolloClient({
     ssrMode: typeof window === "undefined",
-    // link: errorLink.concat(splitLink), // subscription시 해제
+    // link: errorLink.concat(splitLink), // subscription시 밑에 코드와 교체
     link: errorLink.concat(authLink.concat(httpLink)),
     cache: cache,
   });

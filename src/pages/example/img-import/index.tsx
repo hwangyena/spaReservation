@@ -30,7 +30,7 @@ const ImageImport = () => {
         <div>public, next/image의 경우</div>
       </section>
       <section>
-        <img src={IMAGES.SMILE} alt="heart-smile" width={50} height={50} />
+        <img src={IMAGES.SMILE} alt="heart-smile" width={50} height={50}/>
         <div>image import, img태그의 경우</div>
       </section>
       <br />

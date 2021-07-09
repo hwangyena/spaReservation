@@ -1,11 +1,7 @@
 import { useRouter } from 'next/router'
 import Abc from 'src/components/example/d-route/abc'
 
-interface Props {
-
-}
-
-const AbcRoute = (props: Props) => {
+const AbcRoute = () => {
   const router = useRouter()
   return (
     <div>
