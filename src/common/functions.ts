@@ -46,6 +46,14 @@ export const parseCookies = (req: ServerSideRequestType) => {
 };
 
 /**
+ * JWT 토큰 분해하는 함수
+ */
+export const decodeToken = (token?:string) => {
+  if(!token)return ''
+  return JSON.parse(Buffer.from(token.split(".")[1],"base64").toString("utf8"))
+}
+
+/**
  * 돈 바꿔주는 함수
  * @param value 숫자 혹은 숫자로 이루어진 문자
  * @param option prefix: 접두사, suffix: 접미사
