@@ -104,7 +104,7 @@ export const getClient = (accessToken = "", refreshToken = "") => {
 
   // subscription시 해제
   // const wsLink = new WebSocketLink({
-  //   uri: VARIABLES.END_POINT,
+  //   uri: `ws${VARIABLES.END_POINT.match(/https:\/\//) ? "s" : ""}://${VARIABLES.END_POINT.replace(/https?:\/\//, "")}`,
   //   options: {
   //     lazy: true,
   //     reconnect: true,
@@ -120,7 +120,7 @@ export const getClient = (accessToken = "", refreshToken = "") => {
     return {
       headers: {
         ...headers,
-        authorization: `Bearer ${accessToken}`,
+        authorization: accessToken ? `Bearer ${accessToken}` : '',
       },
     };
   });
