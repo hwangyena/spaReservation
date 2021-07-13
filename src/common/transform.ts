@@ -1,6 +1,4 @@
-/**
- * 배송비를 한글로 파싱
- */
+/** 배송비를 한글로 파싱 */
 export const transShippingFeeType = (value: string): string => {
   switch (value) {
     case "FREE":

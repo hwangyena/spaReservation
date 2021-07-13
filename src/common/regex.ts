@@ -1,35 +1,20 @@
 interface IPasswordRestriction {
-  /**
-   * 대문자 필수 여부
-   */
+  /** 대문자 필수 여부 */
   requireUppercase?: boolean;
-  /**
-   * 소문자 필수 여부
-   */
+  /** 소문자 필수 여부 */
   requireLowercase?: boolean;
-  /**
-   * 숫자 필수 여부
-   */
+  /** 숫자 필수 여부 */
   requireNumber?: boolean;
-  /**
-   * 특수문자 필수 여부
-   */
+  /** 특수문자 필수 여부 */
   requireSpecialCharacter?: boolean;
-  /**
-   * 허용할 특수문자 집합, 없으면 기본값 "!@#$%^&*()_+\-=~"
-   */
+  /** 허용할 특수문자 집합, 없으면 기본값 "!@#$%^&*()_+\-=~" */
   specialCharacterSet?: string;
-  /**
-   * 최대 문자 길이, minLength가 없으면 무시됨
-   */
+  /** 최대 문자 길이, minLength가 없으면 무시됨 */
   minLength?: number;
-  /**
-   * 최대 문자 길이, minLength가 없으면 무시됨
-   */
+  /** 최대 문자 길이, minLength가 없으면 무시됨 */
   maxLength?: number;
 }
 
-/* 설명 없는 인터페이스 */
 interface IPasswordRestriction {
   requireUppercase?: boolean;
   requireLowercase?: boolean;
