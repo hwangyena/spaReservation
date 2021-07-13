@@ -69,6 +69,7 @@ export const getClient = (accessToken = "", refreshToken = "") => {
                   .then(({ atk, rtk }) => {
                     Cookies.set(atkName, atk, { expires: 14 });
                     Cookies.set(rtkName, rtk, { expires: 14 });
+                    accessToken = atk;
                     resolvePendingRequests();
                     return atk;
                   })
