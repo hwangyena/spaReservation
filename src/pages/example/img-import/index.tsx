@@ -21,7 +21,7 @@ const ImageImport = () => {
       <h1>import 비교(next/image vs img)</h1>
       <section>
         <Image
-          src={"/assets/heart-smile.png"}
+          src={IMAGES.SMILE}
           alt="heart-smile"
           width={50}
           height={50}
@@ -40,7 +40,7 @@ const ImageImport = () => {
       <h1>pre-load 비교(next/image)</h1>
       <section>
         <Image
-          src={"/static/star.png"}
+          src={"/assets/icons/star.png"}
           alt="star"
           width={100}
           height={100}
@@ -49,7 +49,7 @@ const ImageImport = () => {
         <div>pre-load(priority)의 경우</div>
       </section>
       <section>
-        <Image src={"/static/star.png"} alt="star" width={100} height={100} />
+        <Image src={"/assets/icons/star.png"} alt="star" width={100} height={100} />
         <div>lazy-load의 경우</div>
       </section>
     </Wrapper>

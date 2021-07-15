@@ -46,8 +46,8 @@ const paths = [
   'path': '/example/img-import'
   },
   {
-  'text': '추가예정',
-  'path': '/'
+  'text': 'SNS 로그인 예시',
+  'path': '/example/sns'
   },
   {
   'text': '추가예정',

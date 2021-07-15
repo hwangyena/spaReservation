@@ -16,7 +16,7 @@ export const VARIABLES = {
   /** 페이스북 sns 로그인 키 */
   FACEBOOK_TOKEN: "",
   /** 네이버 sns 로그인 키 */
-  NAVER_TOKEN: "",
+  NAVER_TOKEN: "rdUG2voWfnsVJKBzVIPN",
   /** 아임포트 키 */
   IAMPORT: "",
 };
