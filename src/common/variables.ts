@@ -8,7 +8,7 @@ export const VARIABLES = {
   /** refreshToken 이름 */
   REFRESH_TOKEN: "rtk",
   /** 카카오 sns 로그인 키 */
-  KAKAO_TOKEN: "",
+  KAKAO_TOKEN: "434729900ef1f929160616001ed7f81f",
   /** 구글 sns 로그인 키 */
   GOOGLE_TOKEN: "",
   /** 애플 sns 로그인 키 */

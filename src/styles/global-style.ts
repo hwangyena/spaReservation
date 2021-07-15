@@ -1,13 +1,15 @@
 import { createGlobalStyle } from "styled-components";
+import  NprogressStyle  from "./nprogress";
 
 const GlobalStyle = createGlobalStyle`
   :root {
-    --primary: orange;
+    --primary: hotpink;
     --secendary: #7fa6c5;
     --text-primary: #000000;
     --text-secendary: #ffffff;
     --content-height: calc(100vh - 150px);
   }
+  ${NprogressStyle}
   
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';

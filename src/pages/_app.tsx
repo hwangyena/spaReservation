@@ -9,7 +9,9 @@ import { GlobalStyle } from "src/styles";
 import { parseCookies, VARIABLES } from "src/common";
 import App from "next/app";
 import { getClient } from "src/apis/client";
-
+import { useEffect } from "react";
+import nProgress from "nprogress";
+import router from 'next/router';
 interface MyAppProps extends AppProps {
   cookies: {
     [key: string]: string;
@@ -19,6 +21,27 @@ interface MyAppProps extends AppProps {
 const MyApp = ({ Component, pageProps, cookies }: MyAppProps) => {
   const accessToken = cookies[VARIABLES.ACCESS_TOKEN];
   const refreshToken = cookies[VARIABLES.REFRESH_TOKEN];
+
+  useEffect(() => {
+    const handleStart = (url: string) => {
+      console.log(`Loading: ${url}`);
+      nProgress.start();
+    };
+    const handleStop = () => {
+      nProgress.done();
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
+
   return (
     <>
       <Head />

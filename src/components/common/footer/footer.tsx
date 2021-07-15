@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Wrapper = styled.header`
+const Wrapper = styled.footer`
   height: 50px;
   background: var(--secendary);
   padding: 0 20px;

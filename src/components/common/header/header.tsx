@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import Drawer from "antd/lib/drawer"; // default export 로 가져와야 번들사이즈가 줄어듬
 
 const Wrapper = styled.header`
-  background: var(--primary);
+  background: lime;
   position: sticky;
   top: 0;
   z-index: 3;
