@@ -13,7 +13,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off", // 함수 자료형 검사
     "@typescript-eslint/no-empty-interface": "warn", // 빈 인터페이스 검사
     "@typescript-eslint/no-explicit-any": "off", // any 타입 검사
-    "@typescript-eslint/no-unused-vars": "error", // 미사용 변수 검사
+    "@typescript-eslint/no-unused-vars": "warn", // 미사용 변수 검사
     "@typescript-eslint/no-var-requires": "off"
   }
 }
