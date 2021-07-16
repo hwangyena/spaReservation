@@ -28,6 +28,8 @@
     "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-google-login": "^5.2.2",
+    "react-kakao-login": "^2.1.0",
     "react-redux": "^7.2.4",
     "styled-components": "^5.3.0",
     "ua-parser-js": "^0.7.28"
