@@ -57,7 +57,8 @@ export const getClient = (accessToken = "", refreshToken = "") => {
   const errorLink = onError(
     ({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
-        graphQLErrors.map(({ message, locations, path }) => {
+        for (const err of graphQLErrors) {
+          const { message, locations, path } = err;
           const t = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`;
           console.log(t);
           if (message.includes("유효한 accessToken이 아닙니다.")) {
@@ -94,7 +95,7 @@ export const getClient = (accessToken = "", refreshToken = "") => {
             }
             return forward$.flatMap(() => forward(operation));
           }
-        });
+        }
       }
       if (networkError) {
         console.log(`[Network error]: ${networkError}`);
