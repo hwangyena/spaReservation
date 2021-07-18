@@ -5,7 +5,7 @@ import store from "src/redux/store";
 import { ApolloProvider } from "@apollo/client";
 import { Head, Layout } from "src/components/common";
 import "antd/dist/antd.css";
-import { GlobalStyle } from "src/styles";
+import { GlobalStyle } from "src/assets";
 import { parseCookies, VARIABLES } from "src/common";
 import App from "next/app";
 import { getClient } from "src/apis/client";

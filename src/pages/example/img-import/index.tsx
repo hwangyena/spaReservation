@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import styled from "styled-components";
-import { IMAGES } from "src/common";
+import { IMAGES } from "src/assets";
 
 const Wrapper = styled.article`
   padding-top: 50px;
