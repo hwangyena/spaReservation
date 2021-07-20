@@ -2,7 +2,7 @@ import {
   ApolloClient,
   fromPromise,
   InMemoryCache,
-  // split, // subscription시 해제
+  split,
 } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
@@ -12,8 +12,8 @@ import MUTATIONS from "./mutations";
 import Router from "next/router";
 import { VARIABLES } from "src/common";
 import { concatPagination, Observable } from "@apollo/client/utilities";
-// import { getMainDefinition } from "@apollo/client/utilities"; // subscription시 해제
-// import { WebSocketLink } from "@apollo/client/link/ws"; // subscription시 해제
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
 
 /**
  * serverside중 토큰을 받아 아폴로 클라이언트를 생성하는 함수
@@ -103,25 +103,13 @@ export const getClient = (accessToken = "", refreshToken = "") => {
     }
   );
 
-  // subscription시 해제
-  // const wsLink = new WebSocketLink({
-  //   uri: `ws${VARIABLES.END_POINT.match(/https:\/\//) ? "s" : ""}://${VARIABLES.END_POINT.replace(/https?:\/\//, "")}`,
-  //   options: {
-  //     lazy: true,
-  //     reconnect: true,
-  //     connectionParams: async () => {
-  //       return { Authorization: accessToken ? `Bearer ${accessToken}` : "" };
-  //     },
-  //   },
-  // });
-
   const authLink = setContext(async (_, { headers }) => {
     if (!accessToken) accessToken = Cookies.get(VARIABLES.ACCESS_TOKEN) ?? "";
 
     return {
       headers: {
         ...headers,
-        authorization: accessToken ? `Bearer ${accessToken}` : '',
+        authorization: accessToken ? `Bearer ${accessToken}` : "",
       },
     };
   });
@@ -130,18 +118,33 @@ export const getClient = (accessToken = "", refreshToken = "") => {
     uri: VARIABLES.END_POINT,
   });
 
-  // subscription시 해제
-  // const splitLink = split(
-  //   ({ query }) => {
-  //     const definition = getMainDefinition(query);
-  //     return (
-  //       definition.kind === "OperationDefinition" &&
-  //       definition.operation === "subscription"
-  //     );
-  //   },
-  //   wsLink,
-  //   authLink.concat(httpLink)
-  // );
+  // for sub. SSR중에는 subscription이 먹통이 되므로 브라우저의 경우에만 작동하도록 설정
+  const splitLink = process.browser
+    ? split(
+        ({ query }) => {
+          const definition = getMainDefinition(query);
+          return (
+            definition.kind === "OperationDefinition" &&
+            definition.operation === "subscription"
+          );
+        },
+        new WebSocketLink({
+          uri: `ws${
+            VARIABLES.END_POINT.match(/https:\/\//) ? "s" : ""
+          }://${VARIABLES.END_POINT.replace(/https?:\/\//, "")}`,
+          options: {
+            lazy: true,
+            reconnect: true,
+            connectionParams: async () => {
+              return {
+                Authorization: accessToken ? `Bearer ${accessToken}` : "",
+              };
+            },
+          },
+        }),
+        authLink.concat(httpLink)
+      )
+    : authLink.concat(httpLink);
 
   const cache = new InMemoryCache({
     typePolicies: {
@@ -156,8 +159,8 @@ export const getClient = (accessToken = "", refreshToken = "") => {
 
   const client = new ApolloClient({
     ssrMode: typeof window === "undefined",
-    // link: errorLink.concat(splitLink), // subscription시 밑에 코드와 교체
-    link: errorLink.concat(authLink.concat(httpLink)),
+    link: errorLink.concat(splitLink), // for sub
+    // link: errorLink.concat(authLink.concat(httpLink)), // no sub
     cache: cache,
   });
 
