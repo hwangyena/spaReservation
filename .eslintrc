@@ -1,7 +1,15 @@
 {
-  "extends": ["next", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "next",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
   "parser": "@typescript-eslint/parser",
   "rules": {
+    "prettier/prettier": "off",
     "@next/next/link-passhref": "warn", // next/link 에서 passhref props를 쓰는지 검사
     "@next/next/no-img-element": "off", // Image가 아닌 img를 쓰는지 검사
     "@next/next/no-page-custom-font": "warn", // 폰트 cdn이 document파일 외에 있는 지 검사
