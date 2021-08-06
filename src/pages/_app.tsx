@@ -1,52 +1,52 @@
-import React from "react";
-import type { AppContext, AppProps } from "next/app";
-import { Provider } from "react-redux";
-import store from "src/redux/store";
-import { ApolloProvider } from "@apollo/client";
-import { Head, Layout } from "src/components/common";
-import "antd/dist/antd.css";
-import { GlobalStyle } from "src/assets";
-import { parseCookies, VARIABLES } from "src/common";
-import App from "next/app";
-import { getClient } from "src/apis/client";
-import { useEffect } from "react";
-import nProgress from "nprogress";
-import router from 'next/router';
-interface MyAppProps extends AppProps {
-  cookies: {
-    [key: string]: string;
-  };
-}
-
-const MyApp = ({ Component, pageProps, cookies }: MyAppProps) => {
-  const accessToken = cookies[VARIABLES.ACCESS_TOKEN];
-  const refreshToken = cookies[VARIABLES.REFRESH_TOKEN];
-
+import React, { useEffect } from "react"
+import type { AppProps } from "next/app"
+import { Provider } from "react-redux"
+import store from "src/redux/store"
+import { ApolloProvider } from "@apollo/client"
+import Head from "next/head"
+import nProgress from "nprogress"
+import router from "next/router"
+import { Layout } from "src/components/common"
+import { GlobalStyle } from "src/assets"
+import "antd/dist/antd.css"
+import { client } from "src/apis/client"
+const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const handleStart = (url: string) => {
-      console.log(`Loading: ${url}`);
-      nProgress.start();
-    };
+      console.log(`Loading: ${url}`)
+      nProgress.start()
+    }
     const handleStop = () => {
-      nProgress.done();
-    };
+      nProgress.done()
+    }
 
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleStop);
-    router.events.on("routeChangeError", handleStop);
+    router.events.on("routeChangeStart", handleStart)
+    router.events.on("routeChangeComplete", handleStop)
+    router.events.on("routeChangeError", handleStop)
 
     return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleStop);
-      router.events.off("routeChangeError", handleStop);
-    };
-  }, [router]);
+      router.events.off("routeChangeStart", handleStart)
+      router.events.off("routeChangeComplete", handleStop)
+      router.events.off("routeChangeError", handleStop)
+    }
+  }, [router])
 
   return (
     <>
-      <Head />
+      <Head>
+        <title>프로젝트 명을 기입하시오</title>
+        <link rel="icon" href="/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="템플릿입니다" />
+        <meta name="keyword" content="템플릿" />
+        <meta property="og:site_name" content="템플릿" />
+        <meta property="og:title" content="템플릿" />
+        <meta property="og:description" content="템플릿입니다" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.naver.com/" />
+      </Head>
       <Provider store={store}>
-        <ApolloProvider client={getClient(accessToken, refreshToken)}>
+        <ApolloProvider client={client}>
           <GlobalStyle />
           <Layout>
             <Component {...pageProps} />
@@ -54,14 +54,7 @@ const MyApp = ({ Component, pageProps, cookies }: MyAppProps) => {
         </ApolloProvider>
       </Provider>
     </>
-  );
-};
+  )
+}
 
-export default MyApp;
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  const req = appContext.ctx.req;
-  const cookies = parseCookies(req);
-  return { ...appProps, cookies: cookies };
-};
+export default MyApp

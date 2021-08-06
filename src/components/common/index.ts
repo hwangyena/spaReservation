@@ -1,6 +1,5 @@
-export { default as Layout } from './layout'
-export { default as Header } from './header'
-export { default as Footer } from './footer'
-export { default as Nav } from './nav'
-export { default as Loading } from './loading'
-export { default as Head } from './head'
+export { default as Layout } from "./layout"
+export { default as Header } from "./header"
+export { default as Footer } from "./footer"
+export { default as Nav } from "./nav"
+export { default as Loading } from "./loading"
