@@ -2,6 +2,12 @@
 
 프로젝트 시작 시 ~/example 폴더를 전부 제거하신 후 시작하시면 됩니다.
 
+- ## 해당 템플릿은 eslint, prettier를 사용하고 있습니다.
+
+  ### vscode extension에서 eslint, prettier를 설치해 주시고
+
+  ### vscode 설정에서 defaultFormatter: prettier, formatOnSave: true로 설정해주세요.
+
 ## 설치
 
 ```
@@ -30,6 +36,12 @@
 
 ```
   npm start
+```
+
+## 스키마 생성
+
+```
+  npm run generate
 ```
 
 ## 포트 변경(9999번 예시)

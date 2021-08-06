@@ -12,7 +12,7 @@ type ServerSideRequestType =
   | undefined;
 
 /**
- * SSR중에 디바이스의 타입을 확인하는 함수
+ * SSR중에 디바이스의 타입을 확인하는 함수(Next.js에서만 사용)
  * @param req getServerSideProps의 req
  * @returns 현재 디바이스의 타입
  */
@@ -37,7 +37,7 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
 };
 
 /**
- * 서버사이드중에 쿠키를 파싱하는 함수
+ * 서버사이드중에 쿠키를 파싱하는 함수(Next.js에서만 사용)
  * @param req IncomingMessage
  * @returns 쿠키들
  */
@@ -46,12 +46,9 @@ export const parseCookies = (req: ServerSideRequestType) => {
 };
 
 /**
- * JWT 토큰 분해하는 함수
+ * JWT 토큰 분해하는 함수(Next.js에서만 사용)
  */
-export const decodeToken = (token?:string) => {
-  if(!token)return ''
-  return JSON.parse(Buffer.from(token.split(".")[1],"base64").toString("utf8"))
-}
+export const decodeToken = (token:string|null|undefined) => token ? JSON.parse(Buffer.from(token.split(".")[1],"base64").toString("utf8")) : ''
 
 /**
  * 돈 바꿔주는 함수
