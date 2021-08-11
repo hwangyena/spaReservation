@@ -8,6 +8,14 @@
 
   ### vscode 설정에서 defaultFormatter: prettier, formatOnSave: true로 설정해주세요.
 
+  <br/>
+
+- ## graphql subscription을 쓰지 않을 경우
+
+```
+  npm uninstall bufferutil utf-8-validate
+```
+
 ## 설치
 
 ```
