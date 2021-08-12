@@ -1,9 +1,8 @@
 import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
 import cookie from "cookie";
-import format from "date-fns/format";
-import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
-import ko from "date-fns/locale/ko";
+import 'moment/locale/ko'
+import moment from 'moment'
 
 export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
 
@@ -56,7 +55,7 @@ export const decodeToken = (token:string|null|undefined) => token ? JSON.parse(B
  * @param option prefix: 접두사, suffix: 접미사
  * @returns 콤마가 붙은 숫자
  */
-export const formatToMoney = (
+export const formatToComma = (
   value: string | number,
   option?: { prefix?: string; suffix?: string }
 ): string => {
@@ -78,26 +77,20 @@ export const formatToMoney = (
 };
 
 /**
- * iso 시간을 포맷화 시켜주는 함수
+ * 시간 포맷 함수
  * @param date iso 날짜
  * @param dateFormat 포맷형식(선택)
  */
-export const formatToUtc = (date = "", dateFormat?: string): string => {
-  return format(new Date(date ?? 0), dateFormat ?? "yyyy-MM-dd");
-};
+ export const formatToUtc = ( date: Date | string, dateFormat?: string ): string => moment(date ?? 0).format(dateFormat ?? 'YYYY-MM-DD')
 
-/**
- * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
- * @param dateTime ISO날짜
- * @param addSuffix 접두사 여부
- * @returns 남은 시간
- */
-export const compareToday = (dateTime: string, addSuffix = true): string => {
-  return formatDistanceToNowStrict(new Date(dateTime ?? 0), {
-    locale: ko,
-    addSuffix: addSuffix,
-  });
-};
+ /**
+  * 현재시간과 비교했을 때 남은 시간을 알려주는 함수
+  * @param dateTime 날짜
+  * @param addSuffix 접두사 여부
+  * @returns 남은 시간
+  */
+ export const compareToday = ( dateTime: Date | string, addSuffix = true ): string => moment(dateTime ?? 0).fromNow(addSuffix)
+
 
 /**
  * iamport 주문번호 생성 함수

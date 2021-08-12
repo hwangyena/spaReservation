@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import  NprogressStyle  from "./nprogress";
+import { createGlobalStyle } from "styled-components"
+import NprogressStyle from "./nprogress"
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -46,6 +46,29 @@ const GlobalStyle = createGlobalStyle`
   img {
     -webkit-user-drag: none;
   }
-`;
+  /* 모달 테스트 */
+  .rc-dialog-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    background-color: #00000073;
+  }
+  .rc-dialog-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    outline: 0;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1000;
+    text-align: center;
+  }
+`
 
-export default GlobalStyle;
+export default GlobalStyle

@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import Router from 'next/router';
+import styled from "styled-components"
+import Router from "next/router"
 
 const Wrapper = styled.nav`
-  overflow-x: auto; 
+  overflow-x: auto;
   overflow-y: hidden;
   height: 50px;
   display: flex;
@@ -26,88 +26,88 @@ const Wrapper = styled.nav`
       }
     }
   }
-`;
+`
 
 const paths = [
   {
-  'text': '리덕스 예시',
-  'path': '/example/counter'
+    text: "리덕스 예시",
+    path: "/example/counter",
   },
   {
-  'text': '동적라우팅 예시',
-  'path': '/example/d-route'
+    text: "동적라우팅 예시",
+    path: "/example/d-route",
   },
   {
-  'text': '반응형 컴포넌트 예시',
-  'path': '/example/responsive'
+    text: "반응형 컴포넌트 예시",
+    path: "/example/responsive",
   },
   {
-  'text': '이미지 임포트 예시',
-  'path': '/example/img-import'
+    text: "이미지 임포트 예시",
+    path: "/example/img-import",
   },
   {
-  'text': 'SNS 로그인 예시',
-  'path': '/example/sns'
+    text: "SNS 로그인 예시",
+    path: "/example/sns",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "모달",
+    path: "/example/modal",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
   {
-  'text': '추가예정',
-  'path': '/'
+    text: "추가예정",
+    path: "/",
   },
 ]
 
@@ -115,7 +115,11 @@ const Nav = () => {
   return (
     <Wrapper>
       <ul>
-        {paths.map((v, i) => <li key={i} onClick={() => Router.push(v.path)}>{v.text}</li>)}
+        {paths.map((v, i) => (
+          <li key={i} onClick={() => Router.push(v.path)}>
+            {v.text}
+          </li>
+        ))}
       </ul>
     </Wrapper>
   )
