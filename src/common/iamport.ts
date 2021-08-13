@@ -1,5 +1,4 @@
-import add from "date-fns/add";
-import format from "date-fns/format";
+import moment from "moment";
 import { VARIABLES } from ".";
 
 /** pg사 종류 */
@@ -93,7 +92,7 @@ export const executeIamport = (p: IamportType) => {
     buyer_tel: p.data.tel,
     buyer_addr: p.data.address,
     buyer_postcode: p.data.postcode,
-    vbank_due: format(add(new Date(), { hours: p.data.vbankDueHour ?? 24 }), "yyyyMMddHHmm"),
+    vbank_due: moment(new Date()).format('YYYYMMDD'),
     m_redirect_url: p.data.mobileRedirectUrl,
   }
 

@@ -12,13 +12,6 @@
     [
       "import",
       {
-        "libraryName": "antd",
-        "libraryDirectory": "lib"
-      }
-    ],
-    [
-      "import",
-      {
         "libraryName": "lodash",
         "libraryDirectory": "",
         "camel2DashComponentName": false

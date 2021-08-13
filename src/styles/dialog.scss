@@ -1,0 +1,86 @@
+// 모달
+
+// body scroll lock class
+// .ant-scrolling-effect {
+// }
+.rc-dialog-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100%;
+  background-color: #00000073;
+}
+
+.rc-dialog-wrap {
+  text-align: center;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+  &::before {
+    display: inline-block;
+    width: 0;
+    height: 100%;
+    vertical-align: middle;
+    content: '';
+  }
+}
+
+.rc-dialog {
+  box-sizing: border-box;
+  padding: 0 0 24px;
+  color: #000000d9;
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  pointer-events: none;
+  position: relative;
+  top: 100px;
+  width: auto;
+  max-width: calc(100vw - 32px);
+  margin: 0 auto;
+
+  top: 0;
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+
+  width: 520px;
+  transform-origin: 449px 19px;
+}
+
+.rc-dialog-content {
+  position: relative;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 3px 6px -4px #0000001f, 0 6px 16px #00000014,
+    0 9px 28px 8px #0000000d;
+  pointer-events: auto;
+}
+
+.rc-dialog-body {
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.5715;
+  word-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+  .rc-dialog {
+    flex: 1;
+    max-width: calc(100vw - 16px);
+    margin: 8px auto;
+  }
+}

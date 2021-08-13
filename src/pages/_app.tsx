@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import NextHead from 'next/head'
+import { useRouter } from 'next/router'
 import { Provider } from 'react-redux'
 import store from 'src/redux/store'
 import { ApolloProvider } from '@apollo/client'
-import Head from 'next/head'
-import nProgress from 'nprogress'
-import { useRouter } from 'next/router'
-import { Layout } from 'src/components/common'
-import { GlobalStyle } from 'src/assets'
-import 'antd/dist/antd.css'
 import { useApollo } from 'src/apis/client'
+import nProgress from 'nprogress'
+import 'src/styles/globals.scss'
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -32,8 +30,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <>
-      <Head>
-        <title>프로젝트 명을 기입하시오</title>
+      <NextHead>
+        <title>initproject web next</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="템플릿입니다" />
@@ -43,13 +41,10 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
         <meta property="og:description" content="템플릿입니다" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.naver.com/" />
-      </Head>
+      </NextHead>
       <Provider store={store}>
         <ApolloProvider client={apolloClient}>
-          <GlobalStyle />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </ApolloProvider>
       </Provider>
     </>
