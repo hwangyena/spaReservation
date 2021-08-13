@@ -1,35 +1,34 @@
-import React, { useEffect } from "react"
-import type { AppProps } from "next/app"
-import { Provider } from "react-redux"
-import store from "src/redux/store"
-import { ApolloProvider } from "@apollo/client"
-import Head from "next/head"
-import nProgress from "nprogress"
-import router from "next/router"
-import { Layout } from "src/components/common"
-import { GlobalStyle } from "src/assets"
-import "antd/dist/antd.css"
-import { client } from "src/apis/client"
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  useEffect(() => {
-    const handleStart = (url: string) => {
-      console.log(`Loading: ${url}`)
-      nProgress.start()
-    }
-    const handleStop = () => {
-      nProgress.done()
-    }
+import React, { useEffect } from 'react'
+import type { NextPage } from 'next'
+import type { AppProps } from 'next/app'
+import { Provider } from 'react-redux'
+import store from 'src/redux/store'
+import { ApolloProvider } from '@apollo/client'
+import Head from 'next/head'
+import nProgress from 'nprogress'
+import { useRouter } from 'next/router'
+import { Layout } from 'src/components/common'
+import { GlobalStyle } from 'src/assets'
+import 'antd/dist/antd.css'
+import { useApollo } from 'src/apis/client'
 
-    router.events.on("routeChangeStart", handleStart)
-    router.events.on("routeChangeComplete", handleStop)
-    router.events.on("routeChangeError", handleStop)
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
+  const router = useRouter()
+  useEffect(() => {
+    const handleStart = () => nProgress.start()
+    const handleStop = () => nProgress.done()
+
+    router.events.on('routeChangeStart', handleStart)
+    router.events.on('routeChangeComplete', handleStop)
+    router.events.on('routeChangeError', handleStop)
 
     return () => {
-      router.events.off("routeChangeStart", handleStart)
-      router.events.off("routeChangeComplete", handleStop)
-      router.events.off("routeChangeError", handleStop)
+      router.events.off('routeChangeStart', handleStart)
+      router.events.off('routeChangeComplete', handleStop)
+      router.events.off('routeChangeError', handleStop)
     }
   }, [router])
+  const apolloClient = useApollo(pageProps)
 
   return (
     <>
@@ -46,7 +45,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <meta property="og:url" content="https://www.naver.com/" />
       </Head>
       <Provider store={store}>
-        <ApolloProvider client={client}>
+        <ApolloProvider client={apolloClient}>
           <GlobalStyle />
           <Layout>
             <Component {...pageProps} />
