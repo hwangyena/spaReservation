@@ -1,16 +1,24 @@
 {
-  "printWidth": 80,
-  "tabWidth": 2,
-  "useTabs": false,
-  "semi": false,
-  "singleQuote": true,
-  "quoteProps": "as-needed",
-  "jsxSingleQuote": false,
-  "trailingComma": "es5",
-  "bracketSpacing": true,
-  "jsxBracketSameLine": false,
-  "arrowParens": "avoid",
-  "requirePragma": false,
-  "insertPragma": false,
-  "endOfLine": "lf"
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@next/next/link-passhref": "warn", // next/link 에서 passhref props를 쓰는지 검사
+    "@next/next/no-img-element": "off", // Image가 아닌 img를 쓰는지 검사
+    "@next/next/no-page-custom-font": "warn", // 폰트 cdn이 document파일 외에 있는 지 검사
+    "jsx-a11y/alt-text": "warn", // img alt 여부
+    "no-console": "off", // 콘솔 검사
+    "no-unused-vars": "off", // no touch
+    "react/display-name": "off", // no touch
+    "react-hooks/exhaustive-deps": "off", // hooks 검사
+    "@typescript-eslint/explicit-module-boundary-types": "off", // 함수 자료형 검사
+    "@typescript-eslint/no-empty-interface": "off", // 빈 인터페이스 검사
+    "@typescript-eslint/no-explicit-any": "off", // any 타입 검사
+    "@typescript-eslint/no-unused-vars": "off", // 미사용 변수 검사
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-empty-function": "off"
+  }
 }
