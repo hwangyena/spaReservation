@@ -1,21 +1,16 @@
 import UAParser from "ua-parser-js";
 import { IncomingMessage } from "http";
-import cookie from "cookie";
 import 'moment/locale/ko'
 import moment from 'moment'
 
 export type DeviceType = "MOBILE" | "TABLET" | "DESKTOP";
-
-type ServerSideRequestType =
-  | (IncomingMessage & { cookies?: { [key: string]: any } })
-  | undefined;
 
 /**
  * SSR중에 디바이스의 타입을 확인하는 함수(Next.js에서만 사용)
  * @param req getServerSideProps의 req
  * @returns 현재 디바이스의 타입
  */
-export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
+export const getDeviceType = (req?: IncomingMessage | undefined): DeviceType => {
   let userAgent: UAParser.IResult;
 
   if (req) {
@@ -33,15 +28,6 @@ export const getDeviceType = (req?: ServerSideRequestType): DeviceType => {
     default:
       return "DESKTOP";
   }
-};
-
-/**
- * 서버사이드중에 쿠키를 파싱하는 함수(Next.js에서만 사용)
- * @param req IncomingMessage
- * @returns 쿠키들
- */
-export const parseCookies = (req: ServerSideRequestType) => {
-  return cookie.parse(req ? req.headers.cookie || "" : document.cookie);
 };
 
 /**

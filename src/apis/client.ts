@@ -8,7 +8,6 @@ import {
 import { createUploadLink } from 'apollo-upload-client'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
-import Cookies from 'js-cookie'
 import MUTATIONS from './mutations'
 import Router from 'next/router'
 import { VARIABLES } from 'src/common'
@@ -18,6 +17,7 @@ import { WebSocketLink } from '@apollo/client/link/ws'
 import { isEqual, merge } from 'lodash'
 import { AppProps } from 'next/app'
 import { useMemo } from 'react'
+import { setCookie, parseCookies, destroyCookie } from 'nookies'
 
 const atkName = VARIABLES.ACCESS_TOKEN
 const rtkName = VARIABLES.REFRESH_TOKEN
@@ -40,8 +40,8 @@ const errorLink = onError(
           let forward$: Observable<any>
           if (!isRefreshing) {
             isRefreshing = true
-            const atk = Cookies.get(atkName)
-            const rtk = Cookies.get(rtkName)
+            const atk = parseCookies()[atkName]
+            const rtk = parseCookies()[rtkName]
             forward$ = fromPromise(
               client
                 .mutate({
@@ -49,8 +49,11 @@ const errorLink = onError(
                   variables: { atk, rtk },
                 })
                 .then(({ data: { accessToken, refreshToken } }) => {
-                  Cookies.set(atkName, accessToken, { expires: 14 })
-                  Cookies.set(rtkName, refreshToken, { expires: 14 })
+                  const options = {
+                    maxAge: 60 * 60 * 24 * 14,
+                  }
+                  setCookie(null, atkName, accessToken, options)
+                  setCookie(null, rtkName, refreshToken, options)
                   return true
                 })
                 .then(() => {
@@ -59,8 +62,8 @@ const errorLink = onError(
                 })
                 .catch(() => {
                   pendingRequests = []
-                  Cookies.remove(atkName)
-                  Cookies.remove(rtkName)
+                  destroyCookie(null, atkName)
+                  destroyCookie(null, rtkName)
                   Router.push('/')
                   return false
                 })
@@ -86,7 +89,7 @@ const errorLink = onError(
 )
 
 const authLink = setContext(async (_, { headers }) => {
-  const atk = Cookies.get(VARIABLES.ACCESS_TOKEN)
+  const atk = parseCookies()[atkName]
   return {
     headers: {
       ...headers,
@@ -117,7 +120,7 @@ const splitLink = process.browser
           lazy: true,
           reconnect: true,
           connectionParams: async () => {
-            const atk = Cookies.get(VARIABLES.ACCESS_TOKEN)
+            const atk = parseCookies()[atkName]
             return {
               Authorization: atk ? `Bearer ${atk}` : '',
             }
@@ -139,12 +142,6 @@ const client = new ApolloClient({
       },
     },
   }),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: 'network-only',
-      nextFetchPolicy: 'cache-and-network',
-    },
-  },
 })
 
 const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
@@ -175,7 +172,6 @@ export const addApolloState = (
   if (pageProps?.props) {
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
   }
-
   return pageProps
 }
 

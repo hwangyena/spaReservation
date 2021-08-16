@@ -1,4 +1,4 @@
-schema: http://localhost:3000
+schema: need-endpoint
 generates:
   ./src/schema.ts:
     plugins:

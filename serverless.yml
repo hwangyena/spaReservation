@@ -1,2 +1,10 @@
 myApp:
   component: "@sls-next/serverless-component"
+  inputs:
+    name: "myApp"
+    memory: 2048
+    bucketName: "버킷명"
+    bucketRegion: "ap-northeast-2"
+    cloudfront:
+      distributionId: 아이디
+      comment: "myApp"
