@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 import styled from 'styled-components'
 import React, { useState } from 'react'
-import Modal from 'src/components/modal'
+
+const Modal = dynamic(() => import('src/components/custom/modal'))
+const Drawer = dynamic(() => import('src/components/custom/drawer'))
 
 const Wrapper = styled.div`
   text-align: center;
@@ -13,12 +16,15 @@ const Wrapper = styled.div`
 
 const Home: NextPage = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-
+  const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false)
   return (
     <>
       <Wrapper>
         <h1 className="no-drag">테스터룸</h1>
-        <PopArticle openModal={() => setIsModalVisible(true)} />
+        <PopArticle
+          openModal={() => setIsModalVisible(true)}
+          openDrawer={() => setIsDrawerVisible(true)}
+        />
       </Wrapper>
       <Modal visible={isModalVisible} onClose={() => setIsModalVisible(false)}>
         <h2>This is Modal</h2>
@@ -26,6 +32,15 @@ const Home: NextPage = () => {
         <h4>This is Modal</h4>
         <h5>This is Modal</h5>
       </Modal>
+      <Drawer
+        visible={isDrawerVisible}
+        onClose={() => setIsDrawerVisible(false)}
+      >
+        <h2>This is Drawer</h2>
+        <h3>This is Drawer</h3>
+        <h4>This is Drawer</h4>
+        <h5>This is Drawer</h5>
+      </Drawer>
     </>
   )
 }
@@ -102,9 +117,10 @@ const PopArticleWrapper = styled.article`
 
 interface PopArticleProps {
   openModal: () => void
+  openDrawer: () => void
 }
 
-const PopArticle = ({ openModal }: PopArticleProps) => {
+const PopArticle = ({ openModal, openDrawer }: PopArticleProps) => {
   return (
     <PopArticleWrapper>
       <a>
@@ -114,7 +130,7 @@ const PopArticle = ({ openModal }: PopArticleProps) => {
       </a>
 
       <a>
-        <button className="drawer" onClick={openModal}>
+        <button className="drawer" onClick={openDrawer}>
           Drawer
         </button>
       </a>
