@@ -1,32 +1,31 @@
-import React, { useEffect } from 'react'
-import type { NextPage } from 'next'
-import type { AppProps } from 'next/app'
-import NextHead from 'next/head'
-import { useRouter } from 'next/router'
-import { Provider } from 'react-redux'
-import store from 'src/redux/store'
-import { ApolloProvider } from '@apollo/client'
-import { useApollo } from 'src/apis/client'
-import nProgress from 'nprogress'
-import 'src/styles/globals.scss'
+import { useEffect } from "react";
+import type { AppProps } from "next/app";
+import NextHead from "next/head";
+import { useRouter } from "next/router";
+import { Provider } from "react-redux";
+import store from "src/redux/store";
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "src/apis/client";
+import nProgress from "nprogress";
+import "src/styles/globals.scss";
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
-  const router = useRouter()
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  const router = useRouter();
   useEffect(() => {
-    const handleStart = () => nProgress.start()
-    const handleStop = () => nProgress.done()
+    const handleStart = () => nProgress.start();
+    const handleStop = () => nProgress.done();
 
-    router.events.on('routeChangeStart', handleStart)
-    router.events.on('routeChangeComplete', handleStop)
-    router.events.on('routeChangeError', handleStop)
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
 
     return () => {
-      router.events.off('routeChangeStart', handleStart)
-      router.events.off('routeChangeComplete', handleStop)
-      router.events.off('routeChangeError', handleStop)
-    }
-  }, [router])
-  const apolloClient = useApollo(pageProps)
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
+  const apolloClient = useApollo(pageProps);
 
   return (
     <>
@@ -48,7 +47,7 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
         </ApolloProvider>
       </Provider>
     </>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;

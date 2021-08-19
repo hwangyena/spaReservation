@@ -1,7 +1,6 @@
-import type { NextPage } from "next";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import styled from "styled-components";
-import React, { useState } from "react";
 
 const Modal = dynamic(() => import("src/components/custom/modal"));
 const Drawer = dynamic(() => import("src/components/custom/drawer"));
@@ -14,7 +13,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Home: NextPage = () => {
+const Home = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false);
   return (
