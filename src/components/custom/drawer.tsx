@@ -1,18 +1,18 @@
-import type { FunctionComponent, ReactNode } from 'react'
-import styled from 'styled-components'
-import D from 'rc-drawer'
+import type { FunctionComponent, ReactNode } from "react";
+import styled from "styled-components";
+import D from "rc-drawer";
 
 const Wrapper = styled(D)`
   .rc-drawer-content {
     padding: 24px;
   }
-`
+`;
 
 interface Props {
-  children?: ReactNode
-  visible: boolean
-  onClose: () => void
-  placement?: 'left' | 'top' | 'right' | 'bottom'
+  children?: ReactNode;
+  visible: boolean;
+  onClose: () => void;
+  placement?: "left" | "top" | "right" | "bottom";
 }
 
 const Drawer: FunctionComponent<Props> = ({
@@ -25,15 +25,15 @@ const Drawer: FunctionComponent<Props> = ({
     <Wrapper
       open={visible}
       onClose={onClose}
-      placement={placement ?? 'left'}
+      placement={placement ?? "left"}
       handler={false}
-      width={'auto'}
-      ease={'none'}
-      prefixCls={'rc-drawer'}
+      width={"auto"}
+      ease={"none"}
+      prefixCls={"rc-drawer"}
     >
       {children}
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Drawer
+export default Drawer;

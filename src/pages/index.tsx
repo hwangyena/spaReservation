@@ -1,10 +1,10 @@
-import type { NextPage } from 'next'
-import styled from 'styled-components'
-import React, { useState } from 'react'
-import dynamic from 'next/dynamic'
+import type { NextPage } from "next";
+import dynamic from "next/dynamic";
+import styled from "styled-components";
+import React, { useState } from "react";
 
-const Modal = dynamic(() => import('src/components/custom/modal'))
-const Drawer = dynamic(() => import('src/components/custom/drawer'))
+const Modal = dynamic(() => import("src/components/custom/modal"));
+const Drawer = dynamic(() => import("src/components/custom/drawer"));
 
 const Wrapper = styled.div`
   text-align: center;
@@ -12,12 +12,11 @@ const Wrapper = styled.div`
   h1 {
     margin-bottom: 2rem;
   }
-`
+`;
 
 const Home: NextPage = () => {
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false)
-
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false);
   return (
     <>
       <Wrapper>
@@ -43,10 +42,10 @@ const Home: NextPage = () => {
         <h5>This is Drawer</h5>
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
 
 const PopArticleWrapper = styled.article`
   max-width: 500px;
@@ -63,7 +62,7 @@ const PopArticleWrapper = styled.article`
     margin: 20px;
     ::before,
     ::after {
-      content: '';
+      content: "";
       position: absolute;
       transition: 0.5s;
       inset: 1px;
@@ -103,7 +102,7 @@ const PopArticleWrapper = styled.article`
       border: 1px solid #040a29;
       overflow: hidden;
       ::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -50%;
@@ -114,11 +113,11 @@ const PopArticleWrapper = styled.article`
       }
     }
   }
-`
+`;
 
 interface PopArticleProps {
-  openModal: () => void
-  openDrawer: () => void
+  openModal: () => void;
+  openDrawer: () => void;
 }
 
 const PopArticle = ({ openModal, openDrawer }: PopArticleProps) => {
@@ -136,5 +135,5 @@ const PopArticle = ({ openModal, openDrawer }: PopArticleProps) => {
         </button>
       </a>
     </PopArticleWrapper>
-  )
-}
+  );
+};
