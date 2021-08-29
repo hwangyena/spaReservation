@@ -73,22 +73,3 @@
 ```
   npx next start -p 9999
 ```
-
-## dependency
-
-### graphql
-
-- @apollo/client
-- apollo-upload-client
-- @types/apollo-upload-client
-- @graphql-codegen/cli
-- @graphql-codegen/typescript
-
-### style
-
-- styled-components
-- @types/styled-components
-- nprogress
-- @types/nprogress
-- rc-dialog
-- sass

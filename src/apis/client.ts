@@ -4,44 +4,48 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
   split,
-} from '@apollo/client'
-import { createUploadLink } from 'apollo-upload-client'
-import { setContext } from '@apollo/client/link/context'
-import { onError } from '@apollo/client/link/error'
-import MUTATIONS from './mutations'
-import Router from 'next/router'
-import { VARIABLES } from 'src/common'
-import { Observable } from '@apollo/client/utilities'
-import { getMainDefinition } from '@apollo/client/utilities'
-import { WebSocketLink } from '@apollo/client/link/ws'
-import { isEqual, merge } from 'lodash'
-import { AppProps } from 'next/app'
-import { useMemo } from 'react'
-import { setCookie, parseCookies, destroyCookie } from 'nookies'
+} from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
+import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
+import MUTATIONS from "./mutations";
+import Router from "next/router";
+import { VARIABLES } from "src/common";
+import { Observable } from "@apollo/client/utilities";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import deepmerge from "deepmerge";
+import isEqual from "lodash/isEqual";
+import { AppProps } from "next/app";
+import { useMemo } from "react";
+import Cookies from "js-cookie";
 
-const atkName = VARIABLES.ACCESS_TOKEN
-const rtkName = VARIABLES.REFRESH_TOKEN
-let isRefreshing = false
-let pendingRequests: Array<() => void> = []
+const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
+
+const atkName = VARIABLES.ACCESS_TOKEN;
+const rtkName = VARIABLES.REFRESH_TOKEN;
+let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
+let isRefreshing = false;
+let pendingRequests: Array<() => void> = [];
 
 const resolvePendingRequests = () => {
-  pendingRequests.map(callback => callback())
-  pendingRequests = []
-}
+  pendingRequests.map(callback => callback());
+  pendingRequests = [];
+};
 
 const errorLink = onError(
   ({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors) {
       for (const err of graphQLErrors) {
-        const { message, locations, path } = err
-        const t = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        console.log(t)
-        if (message.includes('유효한 accessToken이 아닙니다.')) {
-          let forward$: Observable<any>
+        const { message, locations, path } = err;
+        const t = `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`;
+        console.log(t);
+        if (message.includes("유효한 accessToken이 아닙니다.")) {
+          let forward$: Observable<any>;
           if (!isRefreshing) {
-            isRefreshing = true
-            const atk = parseCookies()[atkName]
-            const rtk = parseCookies()[rtkName]
+            isRefreshing = true;
+            const atk = Cookies.get(atkName);
+            const rtk = Cookies.get(rtkName);
             forward$ = fromPromise(
               client
                 .mutate({
@@ -49,92 +53,90 @@ const errorLink = onError(
                   variables: { atk, rtk },
                 })
                 .then(({ data: { accessToken, refreshToken } }) => {
-                  const options = {
-                    maxAge: 60 * 60 * 24 * 14,
-                  }
-                  setCookie(null, atkName, accessToken, options)
-                  setCookie(null, rtkName, refreshToken, options)
-                  return true
+                  const options = { expires: 14 };
+                  Cookies.set(atkName, accessToken, options);
+                  Cookies.set(rtkName, refreshToken, options);
+                  return true;
                 })
                 .then(() => {
-                  resolvePendingRequests()
-                  return true
+                  resolvePendingRequests();
+                  return true;
                 })
                 .catch(() => {
-                  pendingRequests = []
-                  destroyCookie(null, atkName)
-                  destroyCookie(null, rtkName)
-                  Router.push('/')
-                  return false
+                  pendingRequests = [];
+                  Cookies.remove(atkName);
+                  Cookies.remove(rtkName);
+                  Router.push("/");
+                  return false;
                 })
                 .finally(() => {
-                  isRefreshing = false
+                  isRefreshing = false;
                 })
-            ).filter(value => Boolean(value))
+            ).filter(value => Boolean(value));
           } else {
             forward$ = fromPromise<void>(
               new Promise(resolve => {
-                pendingRequests.push(() => resolve())
+                pendingRequests.push(() => resolve());
               })
-            )
+            );
           }
-          return forward$.flatMap(() => forward(operation))
+          return forward$.flatMap(() => forward(operation));
         }
       }
     }
     if (networkError) {
-      console.log(`[Network error]: ${networkError}`)
+      console.log(`[Network error]: ${networkError}`);
     }
   }
-)
+);
 
 const authLink = setContext(async (_, { headers }) => {
-  const atk = parseCookies()[atkName]
+  const atk = Cookies.get(atkName);
   return {
     headers: {
       ...headers,
-      authorization: atk ? `Bearer ${atk}` : '',
+      authorization: atk ? `Bearer ${atk}` : "",
     },
-  }
-})
+  };
+});
 
 const httpLink = createUploadLink({
   uri: VARIABLES.END_POINT,
-})
+});
 
 // SSR중에는 subscription이 먹통이 되므로 브라우저의 경우에만 작동하도록 설정
 const splitLink = process.browser
   ? split(
       ({ query }) => {
-        const definition = getMainDefinition(query)
+        const definition = getMainDefinition(query);
         return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
-        )
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
       },
       new WebSocketLink({
         uri: `ws${
-          VARIABLES.END_POINT.match(/https:\/\//) ? 's' : ''
-        }://${VARIABLES.END_POINT.replace(/https?:\/\//, '')}`,
+          VARIABLES.END_POINT.match(/https:\/\//) ? "s" : ""
+        }://${VARIABLES.END_POINT.replace(/https?:\/\//, "")}`,
         options: {
           lazy: true,
           reconnect: true,
           connectionParams: async () => {
-            const atk = parseCookies()[atkName]
+            const atk = Cookies.get(atkName);
             return {
-              Authorization: atk ? `Bearer ${atk}` : '',
-            }
+              Authorization: atk ? `Bearer ${atk}` : "",
+            };
           },
         },
       }),
       authLink.concat(httpLink)
     )
-  : authLink.concat(httpLink)
+  : authLink.concat(httpLink);
 
 const client = new ApolloClient({
-  ssrMode: typeof window === 'undefined',
-  link: errorLink.concat(splitLink),
-  // link: errorLink.concat(authLink.concat(httpLink)), // no sub
+  ssrMode: typeof window === "undefined",
+  // link: errorLink.concat(splitLink), // subscription을 쓸 경우 사용
+  link: errorLink.concat(authLink.concat(httpLink)),
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
@@ -142,41 +144,37 @@ const client = new ApolloClient({
       },
     },
   }),
-})
-
-const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
-
-let apolloClient: ApolloClient<NormalizedCacheObject> | undefined
+});
 
 export const initializeApollo = (initialState?: NormalizedCacheObject) => {
-  const _apolloClient = apolloClient ?? client
+  const _apolloClient = apolloClient ?? client;
   if (initialState) {
-    const existingCache = _apolloClient.extract()
-    const data = merge(initialState, existingCache, {
+    const existingCache = _apolloClient.extract();
+    const data = deepmerge(initialState, existingCache, {
       arrayMerge: (destinationArray: any[], sourceArray: any[]) => [
         ...sourceArray,
         ...destinationArray.filter(d => sourceArray.every(s => !isEqual(d, s))),
       ],
-    })
-    _apolloClient.cache.restore(data)
+    });
+    _apolloClient.cache.restore(data);
   }
-  if (typeof window === 'undefined') return _apolloClient
-  if (!apolloClient) apolloClient = _apolloClient
-  return _apolloClient
-}
+  if (typeof window === "undefined") return _apolloClient;
+  if (!apolloClient) apolloClient = _apolloClient;
+  return _apolloClient;
+};
 
 export const addApolloState = (
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: AppProps['pageProps']
+  pageProps: AppProps["pageProps"]
 ) => {
   if (pageProps?.props) {
-    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract()
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
   }
-  return pageProps
-}
+  return pageProps;
+};
 
-export const useApollo = (pageProps: AppProps['pageProps']) => {
-  const state = pageProps[APOLLO_STATE_PROP_NAME]
-  const store = useMemo(() => initializeApollo(state), [state])
-  return store
-}
+export const useApollo = (pageProps: AppProps["pageProps"]) => {
+  const state = pageProps[APOLLO_STATE_PROP_NAME];
+  const store = useMemo(() => initializeApollo(state), [state]);
+  return store;
+};
