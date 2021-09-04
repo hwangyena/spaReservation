@@ -1,6 +1,11 @@
-import React, { MouseEventHandler, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { transReserveState, UserType } from "./user-info";
+import {
+  transReserveState,
+  UserType,
+  transReserveColor,
+  colorType,
+} from "./user-info";
 import { ICONS } from "src/assets";
 
 const Container = styled.main`
@@ -67,6 +72,18 @@ const CheckedBox = styled.div`
   background-position: center center;
 `;
 
+const ReservationButton = styled.div<{ color: string; background: string }>`
+  width: 79px;
+  height: 22px;
+  font-size: 12px;
+  border: 0;
+  border-radius: 100px;
+  text-align: center;
+
+  color: ${props => props.color};
+  background: ${props => props.background};
+`;
+
 interface Props {
   usersDefault: UserType[];
   usersInfo: UserType[];
@@ -125,8 +142,14 @@ const Table = ({
               <td>{v.place}</td>
               <td>{v.date}</td>
               <td>{v.useHour}</td>
-              <td>{transReserveState(v.reserveState)}</td>
-              {/* 이거 들어가는 버튼 값.. 변수로 넘겨줘서 색상 처리할 수 잇게..! */}
+              <td>
+                <ReservationButton
+                  color={transReserveColor(v.reserveState).color}
+                  background={transReserveColor(v.reserveState).background}
+                >
+                  {transReserveState(v.reserveState)}
+                </ReservationButton>
+              </td>
             </tr>
           ))}
         </tbody>

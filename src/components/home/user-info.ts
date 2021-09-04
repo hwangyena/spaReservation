@@ -15,14 +15,44 @@ export enum ReserveState {
 
 export const transReserveState = (v: ReserveState) => {
   switch (v) {
-    case ReserveState.Cancel:
-      return "취소";
     case ReserveState.Wait:
       return "대기중";
+    case ReserveState.Cancel:
+      return "취소";
     case ReserveState.Complete:
       return "예약완료";
     default:
       return "-";
+  }
+};
+
+export type colorType = (v: ReserveState) => {
+  color: string;
+  background: string;
+};
+
+export const transReserveColor: colorType = (v: ReserveState) => {
+  switch (v) {
+    case ReserveState.Wait:
+      return {
+        color: "#EFAD0A",
+        background: "rgba(250, 192, 50, 0.1)",
+      };
+    case ReserveState.Cancel:
+      return {
+        color: "#FF6760",
+        background: "rgba(255, 103, 96, 0.1)",
+      };
+    case ReserveState.Complete:
+      return {
+        color: "#16D090",
+        background: "rgba(22, 208, 144, 0.1)",
+      };
+    default:
+      return {
+        color: "red",
+        background: "red",
+      };
   }
 };
 
