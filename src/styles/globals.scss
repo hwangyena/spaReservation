@@ -17,6 +17,7 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: 16px;
   color: var(--text-primary);
+  background-color: #c5cdd4dd;
 }
 *,
 *::before,
@@ -25,14 +26,7 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
-input,
-select,
-textarea,
-button {
-  outline: none;
-  appearance: none;
-  border-radius: unset;
-}
+
 textarea {
   resize: none;
 }

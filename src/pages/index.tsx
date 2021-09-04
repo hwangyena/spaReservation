@@ -1,138 +1,131 @@
-import { useState } from "react";
-import dynamic from "next/dynamic";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import Filter from "src/components/home/filter";
+import Table from "src/components/home/table";
+import Add from "src/components/home/add";
+import { ReserveState, staticUsers, UserType } from "src/components/home";
 
-const Modal = dynamic(() => import("src/components/custom/modal"));
-const Drawer = dynamic(() => import("src/components/custom/drawer"));
+const GlobalStyle = createGlobalStyle`
+  body{
+    padding: 20px;
+    background: #f7f9ff;
+  }
+`;
 
-const Wrapper = styled.div`
-  text-align: center;
-  padding-top: 2rem;
-  h1 {
-    margin-bottom: 2rem;
+const Container = styled.main`
+  --black: #25282b;
+  --gray: #f7f9ff;
+  --shadow: 0px 4px 14px rgba(65, 115, 234, 0.15);
+
+  width: 100%;
+  height: 100%;
+
+  .title {
+    padding-left: 10px;
+    color: var(--black);
+    font-weight: 900;
+    font-size: 36px;
+  }
+
+  .count-article {
+    font-size: 18px;
+    color: var(--black);
+    margin-bottom: 20px;
+    span {
+      font-size: 24px;
+    }
   }
 `;
 
 const Home = () => {
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [isDrawerVisible, setIsDrawerVisible] = useState<boolean>(false);
+  const [usersDefault, setUsersDefault] = useState(staticUsers); //delete, add 거친 전체 값
+  const [usersInfo, setUsersInfo] = useState(usersDefault); //search한 결과값
+  const [checkedUsers, setCheckedUsers] = useState<string[]>([]); //check한 유저 id
+
+  /**
+   *  check 선택박스 초기화
+   */
+  const resetSelect = () => {
+    setCheckedUsers([]);
+  };
+
+  /**
+   * 리스트 초기화
+   */
+  const onResetState = (result?: UserType[]) => {
+    setUsersInfo(result ?? usersDefault);
+    resetSelect();
+  };
+
+  /**
+   * 필터 | 유저 찾기
+   * @param inputName 찾고자 하는 유저 이름
+   * @param inputSelect 찾고자 하는 유저 상태
+   */
+  const findUser = (inputName: string, inputSelect: string) => {
+    inputSelect || "";
+    setUsersInfo(() => {
+      const findName = usersDefault.filter(v =>
+        v.name.includes(inputName.toLowerCase())
+      );
+      //이거 전체 항목 찾으려면 filter안하려고 연산자 쓰는 방법 말고는 없는지..?!???!?!
+      return inputSelect
+        ? findName.filter(v => v.reserveState === (inputSelect as ReserveState))
+        : findName;
+    });
+    resetSelect();
+  };
+
+  /**
+   * 체크한 유저 업데이트(toggle)
+   * @param checkUser 체크한 유저
+   */
+  const onChecked = (checkUser: string) => {
+    setCheckedUsers(p =>
+      p.includes(checkUser) ? p.filter(v => v != checkUser) : [...p, checkUser]
+    );
+  };
+
+  console.log("checkedUsers", checkedUsers);
+  ////button event////
+  /**
+   * 선택한것들 삭제
+   */
+  const onDelete = () => {
+    if (checkedUsers.length !== 0) {
+      const result = usersDefault.filter(v => !checkedUsers.includes(v.id));
+      setUsersDefault(result);
+      onResetState(result);
+    } else {
+      alert("check 안햇음!!!");
+    }
+  };
+
+  const onComplete = () => {};
+
   return (
     <>
-      <Wrapper>
-        <h1 className="no-drag">테스터룸</h1>
-        <PopArticle
-          openModal={() => setIsModalVisible(true)}
-          openDrawer={() => setIsDrawerVisible(true)}
+      <GlobalStyle />
+      <Container>
+        <h1 className="title">온천예약관리</h1>
+        <Filter
+          findUser={findUser}
+          onResetState={onResetState}
+          onDelete={onDelete}
         />
-      </Wrapper>
-      <Modal visible={isModalVisible} onClose={() => setIsModalVisible(false)}>
-        <h2>This is Modal</h2>
-        <h3>This is Modal</h3>
-        <h4>This is Modal</h4>
-        <h5>This is Modal</h5>
-      </Modal>
-      <Drawer
-        visible={isDrawerVisible}
-        onClose={() => setIsDrawerVisible(false)}
-      >
-        <h2>This is Drawer</h2>
-        <h3>This is Drawer</h3>
-        <h4>This is Drawer</h4>
-        <h5>This is Drawer</h5>
-      </Drawer>
+        <article className="count-article">
+          총 <span>{usersDefault.length}</span> 건 중{" "}
+          <span>{checkedUsers.length}</span> 건 선택
+        </article>
+        <Table
+          usersInfo={usersInfo}
+          onChecked={onChecked}
+          checkedUsers={checkedUsers}
+        />
+        <Add />
+      </Container>
     </>
   );
 };
 
 export default Home;
-
-const PopArticleWrapper = styled.article`
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #0e1538;
-  a {
-    position: relative;
-    width: 160px;
-    height: 60px;
-    margin: 20px;
-    ::before,
-    ::after {
-      content: "";
-      position: absolute;
-      transition: 0.5s;
-      inset: 1px;
-    }
-    :hover {
-      ::before {
-        inset: -3px;
-      }
-      ::after {
-        inset: -3px;
-        filter: blur(10px);
-      }
-    }
-    :first-child::before,
-    :first-child::after {
-      background: linear-gradient(45deg, #00ccff, #0e1538, #0e1538, #d400d4);
-    }
-    :last-child::before,
-    :last-child::after {
-      background: linear-gradient(45deg, #ff075b, #0e1538, #0e1538, #1aff22);
-    }
-    button {
-      color: white;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #0e1538;
-      z-index: 10;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.2em;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      border: 1px solid #040a29;
-      overflow: hidden;
-      ::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -50%;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.075);
-        transform: skew(25deg);
-      }
-    }
-  }
-`;
-
-interface PopArticleProps {
-  openModal: () => void;
-  openDrawer: () => void;
-}
-
-const PopArticle = ({ openModal, openDrawer }: PopArticleProps) => {
-  return (
-    <PopArticleWrapper>
-      <a>
-        <button className="modal" onClick={openModal}>
-          Modal
-        </button>
-      </a>
-
-      <a>
-        <button className="drawer" onClick={openDrawer}>
-          Drawer
-        </button>
-      </a>
-    </PopArticleWrapper>
-  );
-};
