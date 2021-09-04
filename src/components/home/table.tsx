@@ -1,6 +1,7 @@
 import React, { MouseEventHandler, useState } from "react";
 import styled from "styled-components";
 import { transReserveState, UserType } from "./user-info";
+import { ICONS } from "src/assets";
 
 const Container = styled.main`
   table {
@@ -56,17 +57,31 @@ const CheckedBox = styled.div`
   height: 16px;
 
   /* margin: 19px 127px 19px 21px; */
+  display: flex;
+
   border-radius: 4px;
   background: #4173ea;
+  background-image: url(${ICONS.CHECK});
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center center;
 `;
 
 interface Props {
+  usersDefault: UserType[];
   usersInfo: UserType[];
   onChecked: (v: string) => void;
   checkedUsers: string[];
+  onCheckedAll: () => void;
 }
 
-const Table = ({ usersInfo, onChecked, checkedUsers }: Props) => {
+const Table = ({
+  usersDefault,
+  usersInfo,
+  onChecked,
+  checkedUsers,
+  onCheckedAll,
+}: Props) => {
   return (
     <Container>
       <table>
@@ -81,7 +96,11 @@ const Table = ({ usersInfo, onChecked, checkedUsers }: Props) => {
         <thead>
           <tr>
             <td>
-              <CheckedBox />
+              {checkedUsers.length === usersDefault.length ? (
+                <CheckedBox onClick={onCheckedAll} />
+              ) : (
+                <UnCheckedBox onClick={onCheckedAll} />
+              )}
             </td>
             <td>유저명</td>
             <td>온천명</td>

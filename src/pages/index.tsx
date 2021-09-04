@@ -86,7 +86,14 @@ const Home = () => {
     );
   };
 
-  console.log("checkedUsers", checkedUsers);
+  /**
+   * 전체 항목 체크 | 체크 해제
+   */
+  const onCheckedAll = () => {
+    checkedUsers.length === 0
+      ? setCheckedUsers(usersDefault.map(v => v.id))
+      : setCheckedUsers([]);
+  };
   ////button event////
   /**
    * 선택한것들 삭제
@@ -97,7 +104,7 @@ const Home = () => {
       setUsersDefault(result);
       onResetState(result);
     } else {
-      alert("check 안햇음!!!");
+      alert("사용자를 선택해주세요.");
     }
   };
 
@@ -118,9 +125,11 @@ const Home = () => {
           <span>{checkedUsers.length}</span> 건 선택
         </article>
         <Table
+          usersDefault={usersDefault}
           usersInfo={usersInfo}
           onChecked={onChecked}
           checkedUsers={checkedUsers}
+          onCheckedAll={onCheckedAll}
         />
         <Add />
       </Container>
