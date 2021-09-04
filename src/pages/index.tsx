@@ -3,7 +3,12 @@ import styled, { createGlobalStyle } from "styled-components";
 import Filter from "src/components/home/filter";
 import Table from "src/components/home/table";
 import Add from "src/components/home/add";
-import { ReserveState, staticUsers, UserType } from "src/components/home";
+import {
+  ReserveState,
+  staticUsers,
+  UserType,
+  transReserveState,
+} from "src/components/home";
 
 const GlobalStyle = createGlobalStyle`
   body{
@@ -94,6 +99,13 @@ const Home = () => {
       ? setCheckedUsers(usersDefault.map(v => v.id))
       : setCheckedUsers([]);
   };
+
+  //사용자 알람
+  const alertUser = (user: number, state: string) => {
+    alert(`${user}명은 이미 ${state}되어서 변경할 수 없습니다!`);
+    setCheckedUsers([]);
+  };
+
   ////button event////
   /**
    * 선택한것들 삭제
@@ -108,7 +120,32 @@ const Home = () => {
     }
   };
 
-  const onComplete = () => {};
+  /**
+   * 상태 변경
+   * @param currentState 현재 상태
+   * @param updateState 바꾸고자하는 상태
+   */
+  const onChangeState = (
+    currentState: ReserveState,
+    updateState: ReserveState
+  ) => {
+    let stateKeep = 0;
+    if (checkedUsers.length !== 0) {
+      const result = usersDefault.map(v => {
+        //바꾸는 경우 --------------------------------------------- 더 좋게 만드는 방법이 있을까?!?!?!
+        if (checkedUsers.includes(v.id)) {
+          if (v.reserveState === ReserveState.Wait) {
+            v.reserveState = currentState;
+          }
+          if (v.reserveState === updateState) stateKeep++;
+          return v;
+        } else return v;
+      });
+      setUsersDefault(result);
+    }
+
+    if (stateKeep > 0) alertUser(stateKeep, transReserveState(updateState));
+  };
 
   return (
     <>
@@ -119,6 +156,7 @@ const Home = () => {
           findUser={findUser}
           onResetState={onResetState}
           onDelete={onDelete}
+          onChangeState={onChangeState}
         />
         <article className="count-article">
           총 <span>{usersDefault.length}</span> 건 중{" "}

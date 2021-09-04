@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 import { ICONS } from "src/assets";
 import styled from "styled-components";
@@ -98,9 +97,13 @@ interface Props {
   findUser: (inputName: string, inputSelect: string) => void;
   onResetState: () => void;
   onDelete: () => void;
+  onChangeState: (
+    currentState: ReserveState,
+    updateState: ReserveState
+  ) => void;
 }
 
-const Filter = ({ findUser, onResetState, onDelete }: Props) => {
+const Filter = ({ findUser, onResetState, onDelete, onChangeState }: Props) => {
   const [userName, setUserName] = useState<string>("");
   const [select, setSelect] = useState<string>("");
 
@@ -129,8 +132,6 @@ const Filter = ({ findUser, onResetState, onDelete }: Props) => {
   };
 
   /* button */
-  const onCancel = () => {};
-  const onComplete = () => {};
   const onReset = () => {
     setUserName("");
     setSelect("");
@@ -182,10 +183,20 @@ const Filter = ({ findUser, onResetState, onDelete }: Props) => {
         </span>
 
         <span className="right-content">
-          <button className="btn cancel" onClick={() => onCancel()}>
+          <button
+            className="btn cancel"
+            onClick={() =>
+              onChangeState(ReserveState.Cancel, ReserveState.Complete)
+            }
+          >
             취소
           </button>
-          <button className="btn complete" onClick={() => onComplete()}>
+          <button
+            className="btn complete"
+            onClick={() =>
+              onChangeState(ReserveState.Complete, ReserveState.Cancel)
+            }
+          >
             예약완료
           </button>
           <button className="btn delete" onClick={onDelete}>
