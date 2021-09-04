@@ -3,9 +3,14 @@ export interface UserType {
   name: string;
   place: string;
   date: string;
-  useHour: string;
+  startHour: string;
+  endHour: string;
   reserveState: ReserveState;
 }
+
+export const transTime = (s: string, e: string) => {
+  return s + "~" + e;
+};
 
 export enum ReserveState {
   Wait = "WAIT",
@@ -72,7 +77,8 @@ export const staticUsers: UserType[] = [
     name: "Wilson",
     place: "쿠사츠 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Wait,
   },
   {
@@ -80,7 +86,8 @@ export const staticUsers: UserType[] = [
     name: "karen",
     place: "이카호 온천",
     date: "2021/06/02",
-    useHour: "05:00~22:00",
+    startHour: "05:00",
+    endHour: "22:00",
     reserveState: Cancel,
   },
   {
@@ -88,7 +95,8 @@ export const staticUsers: UserType[] = [
     name: "Marion James",
     place: "긴잔 온천",
     date: "2021/06/11",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Cancel,
   },
   {
@@ -96,7 +104,8 @@ export const staticUsers: UserType[] = [
     name: "Jane Willson",
     place: "벳푸 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Complete,
   },
   {
@@ -104,7 +113,8 @@ export const staticUsers: UserType[] = [
     name: "Robert",
     place: "하코네 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Complete,
   },
   {
@@ -112,7 +122,8 @@ export const staticUsers: UserType[] = [
     name: "Jenny",
     place: "게로 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Wait,
   },
   {
@@ -120,7 +131,8 @@ export const staticUsers: UserType[] = [
     name: "Zarchary Marshall",
     place: "이카호 온천",
     date: "2021/06/02",
-    useHour: "05:00~22:00",
+    startHour: "05:00",
+    endHour: "22:00",
     reserveState: Wait,
   },
   {
@@ -128,7 +140,8 @@ export const staticUsers: UserType[] = [
     name: "Stephanie Cook",
     place: "노보리베츠 온천",
     date: "2021/06/11",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Cancel,
   },
   {
@@ -136,7 +149,8 @@ export const staticUsers: UserType[] = [
     name: "Risa Kim",
     place: "뉴토 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Complete,
   },
   {
@@ -144,7 +158,8 @@ export const staticUsers: UserType[] = [
     name: "Zachary Marshall",
     place: "하코네 온천",
     date: "2021/05/05",
-    useHour: "07:00~22:00",
+    startHour: "07:00",
+    endHour: "22:00",
     reserveState: Complete,
   },
 ];

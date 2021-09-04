@@ -4,9 +4,9 @@ import Filter from "src/components/home/filter";
 import Table from "src/components/home/table";
 import Add from "src/components/home/add";
 import {
+  UserType,
   ReserveState,
   staticUsers,
-  UserType,
   transReserveState,
 } from "src/components/home";
 
@@ -100,12 +100,9 @@ const Home = () => {
       : setCheckedUsers([]);
   };
 
-  //사용자 알람
-  const alertUser = (user: number, state: string) => {
-    alert(`${user}명은 이미 ${state}되어서 변경할 수 없습니다!`);
-    setCheckedUsers([]);
+  const alertSelectUsert = () => {
+    alert("사용자를 선택해주세요.");
   };
-
   ////button event////
   /**
    * 선택한것들 삭제
@@ -116,7 +113,7 @@ const Home = () => {
       setUsersDefault(result);
       onResetState(result);
     } else {
-      alert("사용자를 선택해주세요.");
+      alertSelectUsert();
     }
   };
 
@@ -142,9 +139,27 @@ const Home = () => {
         } else return v;
       });
       setUsersDefault(result);
+    } else {
+      alertSelectUsert();
     }
 
-    if (stateKeep > 0) alertUser(stateKeep, transReserveState(updateState));
+    if (stateKeep > 0)
+      alert(
+        `${stateKeep}명은 이미 ${transReserveState(
+          updateState
+        )}되어서 변경할 수 없습니다!`
+      );
+    setCheckedUsers([]);
+  };
+
+  /**
+   * 새로운 유저 생성하기
+   *
+   * @param newUser 새로 생성할 유저
+   */
+  const onAddUser = (newUser: UserType) => {
+    setUsersDefault(p => [...p, newUser]);
+    setUsersInfo(p => [...p, newUser]);
   };
 
   return (
@@ -169,7 +184,7 @@ const Home = () => {
           checkedUsers={checkedUsers}
           onCheckedAll={onCheckedAll}
         />
-        <Add />
+        <Add onAddUser={onAddUser} />
       </Container>
     </>
   );

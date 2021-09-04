@@ -4,7 +4,7 @@ import {
   transReserveState,
   UserType,
   transReserveColor,
-  colorType,
+  transTime,
 } from "./user-info";
 import { ICONS } from "src/assets";
 
@@ -141,7 +141,7 @@ const Table = ({
               <td>{v.name}</td>
               <td>{v.place}</td>
               <td>{v.date}</td>
-              <td>{v.useHour}</td>
+              <td>{transTime(v.startHour, v.endHour)}</td>
               <td>
                 <ReservationButton
                   color={transReserveColor(v.reserveState).color}
